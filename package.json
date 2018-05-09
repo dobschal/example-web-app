@@ -1,0 +1,25 @@
+{
+  "name": "tgscz2",
+  "version": "1.0.0",
+  "description": "Website for the school Thüringer Gemeinschaftsschule Carl-Zeiss in Weimar.",
+  "repository": {
+    "url": "" 
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "keywords": [],
+  "author": "Sascha Dobschal",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp-browserify": "^0.5.1",
+    "gulp-connect": "^5.5.0",
+    "gulp-copy": "^1.1.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-util": "^3.0.8",
+    "knockout": "^3.4.2",
+    "navigo": "^7.1.2",
+    "bootstrap": "^4.0.0"
+  }
+}
