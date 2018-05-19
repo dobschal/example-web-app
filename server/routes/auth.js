@@ -1,6 +1,6 @@
 const express = require('express');
 const router  = express.Router();
-const security = require("../service/security");
+const security = require("../services/security");
 const User = require("../models/User");
 
 module.exports = function( io ) {
@@ -15,7 +15,7 @@ module.exports = function( io ) {
                 err.status = 401;
                 return next( err );
             }
-            const token = security.getToken( user.username, user.userRole );
+            const token = security.getToken( user.username, user.userRole, user._id + "" );
             res.send({ success: true, token });
         });
     });

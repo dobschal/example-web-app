@@ -13,7 +13,7 @@ var db = mongoose.connection;
     db.on('error', console.error.bind(console, 'Database connection error: '));
     db.once('open', function() { console.log("[app.js] Successfully connected to database."); });
 
-mongoose.connect('mongodb://localhost/tgscz');
+mongoose.connect('mongodb://localhost/example-web-app');
 
 //  Configure express app
 var app = express();

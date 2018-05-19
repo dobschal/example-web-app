@@ -1,23 +1,21 @@
-<ul data-bind="foreach: articles" class="list-group">
-    <li class="list-group-item animate-scale-in">
-        
-        <h3>
-            <span data-bind="text: title"></span>
-        </h3>
-        <span class="mb-2" data-bind="text: content"></span>
-        <ul class="list-group mb-2" data-bind="foreach: comments">
-            <li class="list-group-item animate-scale-in" data-bind="text: content"></li>
-        </ul>
+<div data-bind="foreach: articles" class="list-group">
+    <a data-bind="attr: { href: '#articles/' + _id }" class="animate-scale-in list-group-item list-group-item-action flex-column align-items-start active">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1" data-bind="text: title"></h5>
+            <small data-bind="text: modifiedAt"></small>
+        </div>
+        <p class="mb-1" data-bind="html: content"></p>
+        <small>Donec id elit non mi porta.</small>
 
         <!-- ko if: $parent.authenticated() -->
         <form class="form-inline" data-bind="submit: saveComment">
             <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="Write a comment" aria-label="Write a comment" aria-describedby="basic-addon2" data-bind="value: newComment">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">Send</button>
+                    <button class="btn btn-outline-secondary" type="button">Send</button>
                 </div>
             </div>
         </form>
         <!-- /ko -->
-    </li>
-</ul>
+    </a>
+</div>

@@ -2,21 +2,8 @@ const express = require('express');
 const Article = require("../models/Article");
 const ArticleComment = require("../models/ArticleComment");
 const router  = express.Router();
-const security = require("../service/security");
-const multer = require("multer");
-
-var articleImageStorage = multer.diskStorage({
-    destination: function (req, file, cb)
-    {
-      cb(null, './uploads/article-images');
-    },
-    filename: function (req, file, cb)
-    {
-      cb(null, file.fieldname + '-' + Date.now() + "-" + file.originalname );
-    }
-});
-
-const articleImageUpload = multer({ storage: articleImageStorage });
+const security = require("../services/security");
+const uploader = require("../uploadHandlers/articleImage");
 
 module.exports = function ( io ) {
 
@@ -32,7 +19,7 @@ module.exports = function ( io ) {
         const { content } = req.body;
         const { articleId } = req.params;
         const { username } = req.tokenData;
-        var myArticleComment = new ArticleComment({ articleId, content, username });
+        var myArticleComment = new ArticleComment({ articleId, content, username, modifiedAt: new Date() });
         myArticleComment.save((err, myArticleComment) => {
             if (err) return next( err );
             res.send({ success: true, info: "Saved article comment in database.", articleComment: myArticleComment });
@@ -40,10 +27,10 @@ module.exports = function ( io ) {
         });
     });
 
-    router.post('/articles', security.protect(["user"]), articleImageUpload.single("image"), function(req, res, next) {
+    router.post('/articles', security.protect(["user"]), uploader.single("image"), function(req, res, next) {
         console.log("[articles.js] Got new uploaded file.", req.file);
         const { title, content } = req.body;
-        var myArticle = new Article({ title: title, content: content });
+        var myArticle = new Article({ title: title, content: content, modifiedAt: new Date() });
         myArticle.save((err, myArticle) => {
             if (err) return next( err );
             res.send({ success: true, info: "Saved article in database.", article: myArticle });
@@ -73,6 +60,7 @@ module.exports = function ( io ) {
 
     router.put("/articles/:id", security.protect(["user"]), function( req, res, next ) {
         const articleId = req.params.id;
+        req.body.modifiedAt = new Date();
         Article.findByIdAndUpdate( articleId, req.body, {new: true}, ( err, updatedArticle ) => {
             if (err) return next(err);
             res.send({ success: true, article: updatedArticle });
