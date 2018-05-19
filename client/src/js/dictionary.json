@@ -1,0 +1,15 @@
+{
+    "general": {
+        "save": {
+            "de": "Speichern",
+            "en": "Save"
+        },
+        "cancel": {
+            "de": "Abbrechen",
+            "en": "Cancel"
+        }
+    },
+    "errors": {
+        
+    }
+}

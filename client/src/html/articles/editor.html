@@ -1,0 +1,21 @@
+<div>
+    
+    <label class="mb-2">
+        Bearbeite deinen Artikel mit unserem neuen Editor:    
+    </label>
+
+    <!-- Create the toolbar container -->
+    <div id="toolbar">
+        <button class="ql-bold">Bold</button>
+        <button class="ql-italic">Italic</button>
+    </div>
+       
+    <!-- Create the editor container -->
+    <div id="editor" data-bind="editorContent: { value: editorContent, editor: editor }">
+        <p>Hello World!</p>
+    </div>
+
+    <button class="btn btn-success mt-2" data-tl="general.save"></button>
+    <a href="#articles" class="btn btn-default mt-2" data-tl="general.cancel"></button>
+
+</div>
