@@ -2,8 +2,9 @@
 @import "../../node_modules/font-awesome/scss/font-awesome";
 @import "../../node_modules/quill/dist/quill.snow";
 
-@import "loading-spinner";
 @import "animation";
 @import "article";
+@import "loading-spinner";
+@import "lightbox";
 @import "sidebar";
 @import "topbar";

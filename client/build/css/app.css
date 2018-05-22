@@ -9554,33 +9554,6 @@ a.text-dark:hover, a.text-dark:focus {
 .ql-container.ql-snow {
   border: 1px solid #ccc; }
 
-@keyframes full_rotation {
-  0% {
-    transform: rotate(0deg);
-    border: solid 5px rgba(128, 169, 21, 0.5);
-    border-top: solid 5px transparent; }
-  50% {
-    transform: rotate(180deg);
-    border: solid 5px #80a915;
-    border-top: solid 5px transparent; }
-  100% {
-    transform: rotate(360deg);
-    border: solid 5px rgba(128, 169, 21, 0.5);
-    border-top: solid 5px transparent; } }
-
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: transparent;
-  border: solid 5px rgba(128, 169, 21, 0.5);
-  border-top: solid 5px transparent;
-  animation-name: full_rotation;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-  margin: 20% auto; }
-
 @keyframes fade_in {
   from {
     opacity: 0.0; }
@@ -9616,9 +9589,78 @@ a.text-dark:hover, a.text-dark:focus {
   animation-timing-function: ease-in-out;
   transform-origin: 50% 0%; }
 
-.article img {
-  width: 100%;
-  margin-bottom: 16px; }
+.article .image {
+  background-color: #efefef;
+  border-radius: 4px; }
+  .article .image:hover::before {
+    content: "Click to open";
+    width: 100%;
+    text-align: center;
+    line-height: 300px;
+    font-size: 20px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    display: block; }
+
+@keyframes full_rotation {
+  0% {
+    transform: rotate(0deg);
+    border: solid 5px rgba(128, 169, 21, 0.5);
+    border-top: solid 5px transparent; }
+  50% {
+    transform: rotate(180deg);
+    border: solid 5px #80a915;
+    border-top: solid 5px transparent; }
+  100% {
+    transform: rotate(360deg);
+    border: solid 5px rgba(128, 169, 21, 0.5);
+    border-top: solid 5px transparent; } }
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: solid 5px rgba(128, 169, 21, 0.5);
+  border-top: solid 5px transparent;
+  animation-name: full_rotation;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  margin: 20% auto; }
+
+@keyframes lightbox {
+  from {
+    background-color: rgba(0, 0, 0, 0); }
+  to {
+    background-color: rgba(0, 0, 0, 0.8); } }
+
+@keyframes lightbox_inner {
+  from {
+    opacity: 0.0; }
+  to {
+    opacity: 1.0; } }
+
+.lightbox {
+  background-color: rgba(0, 0, 0, 0.8);
+  animation: lightbox 0.3s ease-in-out;
+  position: fixed;
+  z-index: 9999;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh; }
+  .lightbox:hover {
+    cursor: pointer; }
+  .lightbox .inner {
+    width: 80vw;
+    height: 80vh;
+    margin: 10vw 10vh;
+    background-size: contain;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    animation: lightbox_inner 0.5s ease-in-out;
+    opacity: 1.0; }
 
 /*!
  * Start Bootstrap - Simple Sidebar (https://startbootstrap.com/template-overviews/simple-sidebar)

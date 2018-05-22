@@ -4,7 +4,7 @@
 
 <!-- ko if: !isLoading() && !error()--> 
 <div class="animation-fade-in article">
-    <img src="" data-bind="attr: { src: imageURL }" alt="">
+    <div data-bind="image: { url: imageURL(), width: '100%', height: '300px', useLightbox: true }" class="image mb-2"></div>
     <h2 data-bind="text: title"></h2>
     <small data-bind="text: moment(modifiedAt()).calendar()"></small>
     <article data-bind="html: content"></article>
@@ -30,6 +30,12 @@
             <small><span data-bind="text: username"></span> schrieb <span data-bind="text: $parent.moment(modifiedAt).calendar()"></span></small><br>
             <span data-bind="text: content"></span>
         </li>
+    </ul>    
+    <!-- /ko -->
+
+    <!-- ko if: !isLoadingComments() && !commentsError() && comments().length === 0 -->
+    <ul class="list-group mb-2">
+        <li class="list-group-item list-group-item-info">Keine Einträge vorhanden.</li>
     </ul>
     <!-- /ko -->
 
@@ -48,6 +54,12 @@
             </div>
         </div>
     </form>
+    <!-- /ko -->
+
+    <!-- ko if: !authenticated() && !commentsError() -->
+    <p>
+        <small>Login to write a comment...</small>
+    </p>
     <!-- /ko -->
 
 </div>

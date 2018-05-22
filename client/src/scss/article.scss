@@ -1,8 +1,22 @@
 .article
 {
-    img
+    .image
     {
-        width: 100%;
-        margin-bottom: 16px;
+        background-color: #efefef;
+        border-radius: 4px;
+        &:hover
+        {
+            &::before
+            {
+                content: "Click to open";
+                width: 100%;
+                text-align: center;
+                line-height: 300px;
+                font-size: 20px;
+                color: white;
+                background: rgba(0,0,0,0.5);
+                display: block;
+            }
+        }
     }
 }

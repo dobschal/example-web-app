@@ -1,4 +1,5 @@
 require("./service/knockoutBindings/editorContent");
+require("./service/knockoutBindings/image");
 require("../../node_modules/moment/locale/de");
 
 const Navigo            = require("navigo");
