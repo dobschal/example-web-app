@@ -3,6 +3,6 @@
     "version": "0.1.0",
     "scripts": {
       "postinstall": "npm install --prefix server && npm install --prefix client",
-      "start": " cd server; nodemon ./app.js"
+      "start": "npm start --prefix server"
     }
   }
