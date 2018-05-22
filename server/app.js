@@ -7,21 +7,20 @@ const bodyParser    = require('body-parser');
 const fs            = require("fs");
 const mongoose      = require("mongoose");
 const cors          = require('cors');
-const config         = require("./config.json");
 const mm            = require("mongodb-migrations");
 
 //  Get database connection and execute db migration scripts
-var db = mongoose.connection;
+let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Database connection error: '));
 db.once('open', () => { 
     console.log("[app.js] Successfully connected to database.");
-    var migrator = new mm.Migrator({ url: config.dbPath });
+    var migrator = new mm.Migrator({ url: process.env.dbPath || "mongodb://localhost/example-web-app" });
     migrator.runFromDir(path.join(__dirname, "dbMigration"), (err, result) => {
         if (err) throw new Error("[app.js] Error while database migration: " + err.message);
     });
 });
 
-mongoose.connect( config.dbPath );
+mongoose.connect( process.env.dbPath || "mongodb://localhost/example-web-app" );
 
 //  Configure express app
 var app = express();
@@ -79,5 +78,4 @@ io.on('connection', function( connection ) {
 let port = process.env.PORT || 3000;
 http.listen( port, () => {
   console.log('[app.js] Listen to port ' + port);
-  console.log("[app.js] Envirionment variables: ", process.env);
 });
