@@ -56,3 +56,4 @@
 * !DBMigration
 * Image Upload
 * !Environment Variables
+* Push Notifications

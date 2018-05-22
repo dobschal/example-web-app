@@ -7,7 +7,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "gulp"
+    "start": "gulp prod"
   },
   "keywords": [],
   "author": "Sascha Dobschal",

@@ -37,6 +37,7 @@ ko.bindingHandlers.image =
                     element.style.backgroundImage = `url('${url}')`;
                     element.style.backgroundPosition = `50% 50%`;
                     element.style.backgroundRepeat = `no-repeat`;
+                    element.style.backgroundSize = `cover`;
                     setTimeout(() => {
                         element.style.transition = "opacity 0.5s ease-in-out";
                         element.style.opacity = "1.0";
