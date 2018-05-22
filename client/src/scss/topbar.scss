@@ -1,0 +1,55 @@
+@keyframes burger_button {
+    0% { 
+        transform: rotate(0deg);         
+    }
+    25% { 
+        transform: rotate(30deg);
+    }
+    75% { 
+        transform: rotate(-30deg);
+    }
+    100% { 
+        transform: rotate(0deg);        
+    }
+}
+
+@keyframes page_title {
+    from { 
+        transform: translateY(32px);         
+    }
+    to { 
+        transform: translateY(0px);
+    }
+}
+
+.topbar
+{
+    box-shadow: 0px 15px 15px -15px rgba(0, 0, 0, 0.1);
+
+    h1
+    {
+        text-align: center;
+        font-size: 32px;
+        margin: 0px;
+        span
+        {
+            animation: page_title;
+            animation-duration: 2.0s;
+            animation-timing-function: ease-in-out;
+        }
+    }
+
+    .fa-bars // Burger Button
+    {
+        &:hover
+        {
+            cursor: pointer;
+            animation: burger_button;
+            animation-duration: 2.0s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+        }
+    }
+
+}
+

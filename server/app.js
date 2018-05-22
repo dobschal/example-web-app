@@ -7,18 +7,27 @@ const bodyParser    = require('body-parser');
 const fs            = require("fs");
 const mongoose      = require("mongoose");
 const cors          = require('cors');
+const config         = require("./config.json");
+const mm            = require("mongodb-migrations");
 
-//  Get database connection
+//  Get database connection and execute db migration scripts
 var db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'Database connection error: '));
-    db.once('open', function() { console.log("[app.js] Successfully connected to database."); });
+db.on('error', console.error.bind(console, 'Database connection error: '));
+db.once('open', () => { 
+    console.log("[app.js] Successfully connected to database.");
+    var migrator = new mm.Migrator({ url: config.dbPath });
+    migrator.runFromDir(path.join(__dirname, "dbMigration"), (err, result) => {
+        if (err) throw new Error("[app.js] Error while database migration: " + err.message);
+    });
+});
 
-mongoose.connect('mongodb://localhost/example-web-app');
+mongoose.connect( config.dbPath );
 
 //  Configure express app
 var app = express();
     app.use(cors());
     app.use(logger('dev'));
+    app.use("/uploads", express.static( __dirname + "/uploads" ));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());

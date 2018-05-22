@@ -65,7 +65,7 @@ gulp.task("copy-fonts", function() {
 gulp.task('compile-scripts', function() {
     return gulp.src(jsFiles + jsEntry)
         .pipe(rename('app.js'))
-        .pipe(browserify({ debug: true }))        
+        .pipe(browserify({ debug: true, list: true }))
         .pipe(gulp.dest(buildPath + "/js"))
 });
  

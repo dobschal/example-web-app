@@ -1,12 +1,12 @@
 const $     = require("jquery");
 const ko    = require("knockout");
 const fs    = require('fs');
-const config = require("../config");
+const config = require("../../config");
 const swal  = require("sweetalert");
-const event = require("../service/event");
+const event = require("../../service/event");
 
 let path        = "login";
-let template    = fs.readFileSync(__dirname + "/../../html/login.html", 'utf8');
+let template    = fs.readFileSync(__dirname + "/../../../html/login.html", 'utf8');
 let viewModel    =
 {
     username: ko.observable(""),

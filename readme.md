@@ -10,6 +10,7 @@
     - npm install
 * gulp 
     - browserify
+    - eslint
     - scss
         - bootstrap
             - sidebar
@@ -34,6 +35,15 @@
 * socket connection + Comments on articles
 * translato
 * animations
+* MomentJS
+* !Streams
+* !Cubic Bezier
+* !Drag and Drop Files
+* !Bootstrap Themes
+* !Font Awesome fa-spin
+* !Chart JS
+* !Todo Lists
+* !Lightbox + fadeIn image after load
 
 ### Server
 
@@ -44,5 +54,5 @@
 * JWT
 * Sockets
 * !DBMigration
-* !Image Upload
+* Image Upload
 * !Environment Variables

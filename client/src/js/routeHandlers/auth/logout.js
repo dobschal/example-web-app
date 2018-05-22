@@ -1,7 +1,7 @@
 const swal = require("sweetalert");
-const event = require("../service/event");
+const event = require("../../service/event");
 
-let path        = "logout";
+let path = "logout";
 
 function onActive( params, query )
 {

@@ -1,12 +1,12 @@
-require("../../node_modules/bootstrap/dist/js/bootstrap.bundle");
-require("./knockoutBindings/editorContent");
-//require("./knockoutBindings/animation");
+require("./service/knockoutBindings/editorContent");
+require("../../node_modules/moment/locale/de");
 
-const Navigo    = require("navigo");
-const mainHook  = require("./hooks/beforeAll");
-const mainCtrl  = require("./mainCtrl");
-const translato = require("translato");
-const dictionary = require("./dictionary.json");
+const Navigo            = require("navigo");
+const translato         = require("translato");
+const moment            = require("moment");
+const mainCtrl          = require("./mainController");
+const dictionary        = require("./dictionary.json");
+const event             = require("./service/event");
 
 /**
  *  Use translato to translate page.
@@ -15,19 +15,20 @@ const dictionary = require("./dictionary.json");
  */
 translato.setLocale("de");
 translato.setDictionary( dictionary );
+moment.locale('de');
 
 /**
  *  All routeControllers. Order is important!
  */
 const routeHandlers = [
-    require("./routes/articles/list"),
-    require("./routes/articles/editor"),
-    require("./routes/articles/detail"),
-    require("./routes/product"),
-    require("./routes/register"),
-    require("./routes/login"),
-    require("./routes/logout"),
-    require("./routes/start")
+    require("./routeHandlers/articles/list"),
+    require("./routeHandlers/articles/editor"),
+    require("./routeHandlers/articles/detail"),
+    require("./routeHandlers/products/index"),
+    require("./routeHandlers/auth/register"),
+    require("./routeHandlers/auth/login"),
+    require("./routeHandlers/auth/logout"),
+    require("./routeHandlers/start/index")
 ];
 
 var router = new Navigo(null, true);
@@ -46,7 +47,16 @@ var bindings = {
 };
 
 router.hooks({
-    before: mainHook.bind( bindings )
+    before: done => {
+        event.broadcast( "BeforeRouteChange", bindings );
+        done();
+    },
+    after: () => {
+        event.broadcast( "AfterRouteChange", bindings );
+    },
+    leave: () => {
+        event.broadcast( "LeaveRoute", bindings );
+    }
 });
 
 mainCtrl.call( bindings, null );

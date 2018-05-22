@@ -37,6 +37,7 @@ function onActive( params, query )
 
 function onBefore( done, params )
 {
+    $("title").text("Article");
     console.log("[articles/editor.js] Enter view");
     done();
 }

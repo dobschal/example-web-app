@@ -1,21 +1,19 @@
-<div data-bind="foreach: articles" class="list-group">
-    <a data-bind="attr: { href: '#articles/' + _id }" class="animate-scale-in list-group-item list-group-item-action flex-column align-items-start active">
+<!-- ko if: articles().length === 0 -->
+<div class="alert alert-info">
+    Keine Einträge vorhanden
+</div>
+<!-- /ko -->
+
+<div data-bind="foreach: articles" class="list-group animate-fade-in">
+    <a data-bind="attr: { href: '#articles/' + _id }" class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1" data-bind="text: title"></h5>
-            <small data-bind="text: modifiedAt"></small>
+            <small data-bind="text: $parent.moment(modifiedAt).calendar()"></small>
         </div>
         <p class="mb-1" data-bind="html: content"></p>
-        <small>Donec id elit non mi porta.</small>
-
-        <!-- ko if: $parent.authenticated() -->
-        <form class="form-inline" data-bind="submit: saveComment">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Write a comment" aria-label="Write a comment" aria-describedby="basic-addon2" data-bind="value: newComment">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button">Send</button>
-                </div>
-            </div>
-        </form>
-        <!-- /ko -->
+        <small>
+            Kommentare: 
+            <span data-bind="text: comments().length"></span>
+        </small>
     </a>
 </div>

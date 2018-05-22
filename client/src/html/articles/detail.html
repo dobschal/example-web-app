@@ -1,3 +1,53 @@
-<div>
-    Detail page for an article...
+<!-- ko if: isLoading() --> 
+<div class="loading-spinner"></div>
+<!-- /ko -->
+
+<!-- ko if: !isLoading() && !error()--> 
+<div class="animation-fade-in article">
+    <img src="" data-bind="attr: { src: imageURL }" alt="">
+    <h2 data-bind="text: title"></h2>
+    <small data-bind="text: moment(modifiedAt()).calendar()"></small>
+    <article data-bind="html: content"></article>
+</div>
+<!-- /ko-->
+
+<!-- ko if: !isLoading() && error()--> 
+<div class="animation-fade-in alert alert-danger">
+    <span data-bind="text: error"></span>
+</div>
+<!-- /ko-->
+
+<div class="mt-4">
+    <h4>Comments</h4>
+
+    <!-- ko if: isLoadingComments() --> 
+    <div class="loading-spinner"></div>
+    <!-- /ko -->
+
+    <!-- ko if: !isLoadingComments() && !commentsError() --> 
+    <ul class="list-group mb-2" data-bind="foreach: comments">
+        <li class="list-group-item">
+            <small><span data-bind="text: username"></span> schrieb <span data-bind="text: $parent.moment(modifiedAt).calendar()"></span></small><br>
+            <span data-bind="text: content"></span>
+        </li>
+    </ul>
+    <!-- /ko -->
+
+    <!-- ko if: !isLoadingComments() && commentsError()--> 
+    <div class="animation-fade-in alert alert-danger">
+        <span data-bind="text: commentsError"></span>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if: authenticated() && !commentsError() -->
+    <form class="form-inline" data-bind="submit: saveComment">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Write a comment" aria-label="Write a comment" aria-describedby="basic-addon2" data-bind="value: newComment">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button">Send</button>
+            </div>
+        </div>
+    </form>
+    <!-- /ko -->
+
 </div>
