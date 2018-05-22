@@ -10,8 +10,6 @@ const cors          = require('cors');
 const config         = require("./config.json");
 const mm            = require("mongodb-migrations");
 
-console.log("[app.js] Envirionment variables: ", process.env);
-
 //  Get database connection and execute db migration scripts
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Database connection error: '));
@@ -81,4 +79,5 @@ io.on('connection', function( connection ) {
 let port = process.env.PORT || 3000;
 http.listen( port, () => {
   console.log('[app.js] Listen to port ' + port);
+  console.log("[app.js] Envirionment variables: ", process.env);
 });
