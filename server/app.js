@@ -76,6 +76,7 @@ io.on('connection', function( connection ) {
 });
 
 // TODO: put port into environment variables
-http.listen(3000, function(){
-  console.log('[app.js] Listen to port 3000');
+let port = process.env.PORT || 3000;
+http.listen( port, () => {
+  console.log('[app.js] Listen to port ' + port);
 });
