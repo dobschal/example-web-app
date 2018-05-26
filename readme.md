@@ -27,11 +27,12 @@
     - show data
 * templates via browserif + brfs
 * TextEditor
-* !Image Upload
-* !Offline Available
+* Image Upload
+* Offline Available
 * !Limit response size GET /articles?limit=100 or /articles?from=2018-07-04&to=now
-* !Cache data in local storage
-* !generate random data
+* !Infinity Scroll
+* Cache data in local storage
+* Generate random data
 * socket connection + Comments on articles
 * translato
 * animations
@@ -43,7 +44,8 @@
 * !Font Awesome fa-spin
 * !Chart JS
 * !Todo Lists
-* !Lightbox + fadeIn image after load
+* Lightbox + 
+* !fadeIn image after load
 * Datenschutz DSGVO
 
 ### Server
@@ -54,7 +56,9 @@
 * mongoose
 * JWT
 * Sockets
-* !DBMigration
+* DBMigration
 * Image Upload
 * !Environment Variables
-* Push Notifications
+* !Push Notifications
+* !E-Mail Templates
+* !CRON Jobs
