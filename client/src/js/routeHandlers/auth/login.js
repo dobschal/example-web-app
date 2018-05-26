@@ -40,6 +40,7 @@ function login( data )
     let username = viewModel.username();
     let password = viewModel.password();
     if( !username || !password ) return swal("Eingabe fehlt", "Bitte gibt Username und Passwort ein!", "error");
+    $("#submit-button").addClass("in-progress");
     $.post( config.serverUrl + "/login", { username, password }).then( response => {
         console.log( "[login.js] Logged in successfully. ", response );
         window.localStorage.setItem("token", response.token);
@@ -49,6 +50,8 @@ function login( data )
     }).catch( error => {
         console.error( "[login.js] Error on logging in.", error );
         swal("Fehler", "Nutzer konnte nicht angemeldet werden!", "error");
+    }).finally( () => {
+        $("#submit-button").removeClass("in-progress");
     });
 }
 

@@ -2,6 +2,7 @@
 //  CONFIG
 const filesToCopy = ["./src/html/index.html", "./src/js/service-worker.js"];
 const fontsToCopy = ["./node_modules/font-awesome/fonts/**"];
+const imagesToCopy = ["./node_modules/lightbox2/dist/images/**"];
 const sassFiles = './src/scss/';
 const sassEntry = 'app.scss';
 const jsFiles = "./src/js/";
@@ -61,6 +62,12 @@ gulp.task("copy-fonts", function() {
       .src( fontsToCopy )
       .pipe(gulp.dest(buildPath + "/fonts"));
 });
+
+gulp.task("copy-images", function() {
+    return gulp
+      .src( imagesToCopy )
+      .pipe(gulp.dest(buildPath + "/images"));
+});
  
 gulp.task('compile-scripts', function() {
     return gulp.src(jsFiles + jsEntry)
@@ -104,6 +111,7 @@ gulp.task('build-dev', [
     'compile-sass', 
     'copy-files', 
     'copy-fonts', 
+    'copy-images',
     'compile-scripts',
     "use-uncompressed-app",
     'update-service-worker-version'
@@ -113,6 +121,7 @@ gulp.task('build-prod', [
     'compile-sass', 
     'copy-files', 
     'copy-fonts', 
+    'copy-images',
     'compile-scripts',    
     'compress-scripts',
     "use-compressed-app",

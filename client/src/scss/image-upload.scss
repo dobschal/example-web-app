@@ -1,0 +1,49 @@
+.image-upload-zone
+{
+    height: 200px;
+    width: 100%;
+    border: dashed 1px #d4dbe0;
+    background-color: #efefef38;
+    border-radius: 8px;
+    margin: 16px 0px;
+    position: relative;
+
+    &.dragover
+    {
+        cursor: pointer;
+        background-color: #e6f1ff;
+        border: dashed 1px #b2c0ca;
+        transition: transform 0.5s ease-in-out;
+        transform: rotate(3deg);
+    }
+
+    .description
+    {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 1;
+        transform: translateX(-50%);
+        color: #929292;
+        line-height: 32px;
+        margin-top: -16px;
+    }
+}
+
+.image-upload-preview
+{
+    margin: 0;
+    padding: 0;
+    li
+    {   
+        list-style: none;
+        display: inline-block;     
+        img
+        {
+            max-width: 100px;
+            max-height: 100px;
+            border: solid 8px white;
+            box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.5);
+        }
+    }
+}

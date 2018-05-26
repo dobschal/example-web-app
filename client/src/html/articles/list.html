@@ -4,16 +4,21 @@
 </div>
 <!-- /ko -->
 
-<div data-bind="foreach: articles" class="list-group animate-fade-in">
-    <a data-bind="attr: { href: '#articles/' + _id }" class="list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1" data-bind="text: title"></h5>
-            <small data-bind="text: $parent.moment(modifiedAt).calendar()"></small>
+<div class="row animate-fade-in article-list" data-bind="foreach: articles" >
+    <div class="col-lg-6 mb-2">
+        <div class="media">
+            <div class="media-left mr-2">
+                <a data-bind="attr: { href: images[0].file, 'data-title': title }" data-lightbox="article-image">
+                    <img data-bind="attr: { src: images[0].file + '?width=100&height=100' }">
+                </a>
+            </div>
+            <a class="media-body" data-bind="attr: { href: '#articles/' + _id }">
+                <div class="d-flex w-100 justify-content-between">
+                    <h4 class="media-heading"  data-bind="text: title"></h4>
+                    <small data-bind="text: $parent.moment(modifiedAt).calendar()"></small>
+                </div>
+                <span data-bind="text: $parent.stripHtml(content)"></span>
+            </a>
         </div>
-        <p class="mb-1" data-bind="html: content"></p>
-        <small>
-            Kommentare: 
-            <span data-bind="text: comments().length"></span>
-        </small>
-    </a>
+    </div>
 </div>

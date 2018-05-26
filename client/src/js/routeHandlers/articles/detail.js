@@ -20,7 +20,8 @@ let viewModel   =
     title: ko.observable(""),
     content: ko.observable(""),
     modifiedAt: ko.observable(null),
-    imageURL: ko.observable(""),
+    images: ko.observableArray([]),
+    screenWidth: ko.observable(window.innerWidth),
 
     newComment: ko.observable(""),
     comments: ko.observableArray([]),
@@ -35,6 +36,8 @@ function onActive()
     
     this.titleEl.innerHTML = "Artikel";
     this.contentEl.innerHTML = template;
+
+    viewModel.screenWidth( $(this.contentEl).width() );
     
     ko.applyBindings( viewModel, this.contentEl );
 
@@ -43,7 +46,7 @@ function onActive()
         viewModel.title( article.title );
         viewModel.content( article.content );
         viewModel.modifiedAt( article.modifiedAt );
-        viewModel.imageURL( article.image );
+        viewModel.images( article.images );
     }).catch( err => {
         console.error( err );
         viewModel.error("Inhalt konnte nicht geladen werden.");

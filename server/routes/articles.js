@@ -28,41 +28,72 @@ module.exports = function ( io ) {
         });
     });
 
-    router.post('/articles', security.protect(["user"]), uploader.single("image"), function(req, res, next) {
-        console.log("[articles.js] Got new uploaded file.", req.file);
-        const { path:imagePath } = req.file;
-        const { title, content } = req.body;
-        var myArticle = new Article({ title: title, content: content, modifiedAt: new Date(), image: imagePath });
-        myArticle.save((err, myArticle) => {
+    router.post('/articles', security.protect(["user"]), uploader.array("image", 100), function(req, res, next) {
+        console.log("[articles.js] Got new uploaded file.", req.files, req.body);
+        let { title, content, imageMeta } = req.body;
+        let images = [];
+        imageMeta.forEach( metaInfoString => {
+            let metaInfoObject = JSON.parse( metaInfoString );
+            let { status, file, sortIndex } = metaInfoObject;            
+            if( typeof status === "string" && status.toLowerCase() === "wanttoupload" )
+            {                
+                let uploadedFileInfo = req.files.find( uploadedFile => {
+                    return uploadedFile.originalname === file;
+                });
+                if( uploadedFileInfo )
+                {
+                    let { path } = uploadedFileInfo;
+                    let articleImage = {
+                        file: path,
+                        status: "uploaded",
+                        sortIndex: sortIndex,
+                        modifiedAt: new Date()
+                    };
+                    images.push( articleImage );
+                }
+            }
+        });
+        let myArticle = new Article({ title: title, content: content, modifiedAt: new Date(), images: images });
+        myArticle.save((err, storedArticle) => {
             if (err) return next( err );
-            res.send({ success: true, info: "Saved article in database.", article: myArticle });
+            res.send({ success: true, info: "Saved article in database.", article: storedArticle });
         });
     });
 
     router.get('/articles', function(req, res, next) {
-        console.log("Hello World");
         const protocoll = req.connection.encrypted ? "https" : "http";
-        Article.find(( err, articles ) => {
+        Article.find(( err, articlesFromDB ) => {
             if (err) return next( err );            
-            articles = articles.map( item => {
+            let articles = articlesFromDB.map( article => {
+
+                article.images.sort( (a,b) => {
+                    if(a.sortIndex < b.sortIndex ) return -1;
+                    if(a.sortIndex > b.sortIndex ) return 1;
+                    return 0;
+                } );
 
                 /**
                  *  Check if it is a relative or absolute URL. If relative add
                  *  the current host and protocoll to the URL string.
                  ** /uploads/filename.jpg --> http://yourdomain.de/uploads/filename.jpg
                  */
-                if( !item.image.includes("http://") && !item.image.includes("https://") )
-                {
-                    item.image = protocoll + "://" + req.headers.host + "/" + item.image;
-                }
-                return item;
+                article.images = article.images.map( imageFromDB => {
+                    if( !imageFromDB.file.includes("http://") && !imageFromDB.file.includes("https://") )
+                    {
+                        imageFromDB.file =  protocoll + "://" + req.headers.host + "/" + imageFromDB.file;
+                    }
+                    return imageFromDB;
+                });
+                return article;
             });
+
             articles.sort( (a,b) => {
                 if(a.modifiedAt.getTime() < b.modifiedAt.getTime() ) return -1;
                 if(a.modifiedAt.getTime() > b.modifiedAt.getTime() ) return 1;
                 return 0;
-            });       
-            console.log( "Hello", articles );     
+            });
+            
+            console.log( "[articles.js] Got articles: ", articles );
             res.send({ success: true, info: "Got articles from database.", articles });
         });
     });
@@ -83,10 +114,13 @@ module.exports = function ( io ) {
              *  the current host and protocoll to the URL string.
              ** /uploads/filename.jpg --> http://yourdomain.de/uploads/filename.jpg
              */
-            if( !article.image.includes("http://") && !article.image.includes("https://") )
-            {
-                article.image = protocoll + "://" + req.headers.host + "/" + article.image;
-            }
+            article.images = article.images.map( image => {
+                if( !image.file.includes("http://") && !image.file.includes("https://") )
+                {
+                    image.file = protocoll + "://" + req.headers.host + "/" + image.file;
+                }
+                return image;
+            });
             res.send({ success: true, info: "Got article from database.", article });
         });
     });

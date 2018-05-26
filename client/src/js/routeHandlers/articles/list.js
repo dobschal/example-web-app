@@ -5,6 +5,7 @@ const swal   = require("sweetalert");
 const moment = require("moment");
 const config  = require("../../config");
 const websocket = require("../../service/websocket");
+const lightbox = require("lightbox2");
 
 let path        = "articles";
 let template    = fs.readFileSync(__dirname + "/../../../html/articles/list.html", 'utf8');
@@ -14,13 +15,14 @@ let viewModel    =
     articles: ko.observableArray([]),
     loadingArticles: ko.observable(false),
     errorOnLoading: ko.observable(""),
-    authenticated: ko.observable( false )
+    authenticated: ko.observable( false ),
+    stripHtml: stripHtml
 };
 let socketConnection = null;
 
 function onActive( params, query )
 {
-    console.log("[articles/list.js] View ready");
+    console.log("[ArticleList] View ready");
 
     this.titleEl.innerHTML = "Artikel";
     this.contentEl.innerHTML = template;
@@ -39,10 +41,11 @@ function onActive( params, query )
     viewModel.loadingArticles(true);
     $.get( config.serverUrl + "/articles" ).then( response => {
         const { articles } = response;
+        console.log( "[ArticleList] Load articles from API.", articles );
         window.localStorage.setItem("articles", JSON.stringify( articles ));
         viewModel.articles( articles.map( prepareArticle ));
     }).catch(err => {
-        console.error( "[articles/list.js] Unable to load data from API.", err );
+        console.error( "[ArticleList] Unable to load data from API.", err );
         viewModel.errorOnLoading("Inhalt konnte nicht geladen werden!");
     }).always( () => {
         viewModel.loadingArticles(false);
@@ -53,7 +56,7 @@ function onBefore( done, params )
 {
     $("title").text("Articles");
     
-    console.log("[articles/list.js] Enter view");
+    console.log("[ArticleList] Enter view");
 
     viewModel.authenticated(window.localStorage.getItem("token") ? true : false);
 
@@ -78,7 +81,7 @@ function onBefore( done, params )
 
 function onLeave()
 {
-    console.log("[articles/list.js] Left view");
+    console.log("[ArticleList] Left view");
     if( socketConnection !== null)
     {
         socketConnection.removeAllListeners();
@@ -93,6 +96,13 @@ function prepareArticle( articleItem )
         articleItem.comments(articleComments);
     });
     return articleItem;
+}
+
+function stripHtml(html)
+{
+   var tmp = document.createElement("DIV");
+   tmp.innerHTML = html;
+   return tmp.textContent || tmp.innerText || "";
 }
 
 module.exports = { path, onActive, onBefore, onLeave };

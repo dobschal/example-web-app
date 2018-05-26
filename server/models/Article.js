@@ -4,7 +4,14 @@ var articleSchema = mongoose.Schema({
     title: { type: String, required: true },
     content: { type: String, required: true },
     modifiedAt: { type: Date, required: true },
-    image: { type: String, required: true }
+    images: [
+        {
+            file : String,
+            sortIndex : Number,
+            status : String,
+            modifiedAt : Date
+        }
+    ]
 });
 
 module.exports = mongoose.model('Article', articleSchema);

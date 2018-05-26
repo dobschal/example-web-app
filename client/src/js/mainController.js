@@ -131,7 +131,7 @@ event.on("BeforeRouteChange", data => {
     event.broadcast("UserChanged");
 
     data.titleEl.innerHTML = "";
-    data.contentEl.innerHTML = `<div class="loading-spinner"></div>`;
+    data.contentEl.innerHTML = `<div class="in-progress"></div>`;
 
     if( window.innerWidth < 768 ) $("#wrapper").removeClass("toggled");
 

@@ -44,6 +44,7 @@
 * !Chart JS
 * !Todo Lists
 * !Lightbox + fadeIn image after load
+* Datenschutz DSGVO
 
 ### Server
 

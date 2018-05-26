@@ -1,5 +1,6 @@
 const ko = require("knockout");
-const $ = require("jquery");
+
+// TODO: remove this, use normal lightbox2 !!!
 
 ko.bindingHandlers.image =
 {
@@ -28,7 +29,7 @@ ko.bindingHandlers.image =
         switch(element.tagName.toLowerCase())
         {
             case "div": 
-                element.innerHTML = `<div class="loading-spinner"></div>`;
+                element.innerHTML = `<div class="in-progress"></div>`;
                 element.style.overflow = "hidden";
                 downloadingImage.onload = () =>
                 {
