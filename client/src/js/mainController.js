@@ -119,6 +119,8 @@ event.on("BeforeRouteChange", data => {
 
     ko.cleanNode(data.contentEl);
     ko.cleanNode(data.titleEl);
+    
+    data.topRightEl.innerHTML = "";
 
     let token = window.localStorage.getItem("token");
     userIsAuthenticated = token === null ? false : true;

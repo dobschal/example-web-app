@@ -62,3 +62,4 @@
 * !Push Notifications
 * !E-Mail Templates
 * !CRON Jobs
+* !Fav icon

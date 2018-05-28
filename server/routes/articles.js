@@ -3,6 +3,7 @@ const Article           = require("../models/Article");
 const ArticleComment    = require("../models/ArticleComment");
 const security          = require("../services/security");
 const uploader          = require("../uploadHandlers/articleImage");
+const fs                = require("fs");
 
 const router  = express.Router();
 
@@ -28,7 +29,7 @@ module.exports = function ( io ) {
         });
     });
 
-    router.post('/articles', security.protect(["user"]), uploader.array("image", 100), function(req, res, next) {
+    router.post('/articles', security.protect(["user"]), uploader.array("images", 100), function(req, res, next) {
         console.log("[articles.js] Got new uploaded file.", req.files, req.body);
         let { title, content, imageMeta } = req.body;
         let images = [];
@@ -125,10 +126,60 @@ module.exports = function ( io ) {
         });
     });
 
-    router.put("/articles/:id", security.protect(["user"]), function( req, res, next ) {
+    router.put("/articles/:id", security.protect(["user"]), uploader.array("images", 100), function( req, res, next ) {
         const articleId = req.params.id;
-        req.body.modifiedAt = new Date();
-        Article.findByIdAndUpdate( articleId, req.body, {new: true}, ( err, updatedArticle ) => {
+        let { title, content, imageMeta } = req.body;
+        let images = [];
+        const protocoll = req.connection.encrypted ? "https" : "http";
+        imageMeta.forEach( metaInfoString => {
+            let metaInfoObject = JSON.parse( metaInfoString );
+            let { status, file, sortIndex } = metaInfoObject;            
+            switch( status.toLowerCase() )
+            {                
+                case "wanttoupload":
+                    let uploadedFileInfo = req.files.find( uploadedFile => {
+                        return uploadedFile.originalname === file;
+                    });
+                    if( uploadedFileInfo )
+                    {
+                        let { path } = uploadedFileInfo;
+                        images.push( {
+                            file: path,
+                            status: "uploaded",
+                            sortIndex: sortIndex,
+                            modifiedAt: new Date()
+                        } );
+                    }
+                break;
+                case "uploaded":
+                    images.push( {
+                        file: file.replace(protocoll + "://" + req.headers.host + "/", ""),
+                        status: "uploaded",
+                        sortIndex: sortIndex,
+                        modifiedAt: new Date()
+                    });
+                break;
+                case "wanttodelete":
+                    let path = file.replace(protocoll + "://" + req.headers.host + "/", "");
+                    if( path.includes("http://") || path.includes("https://") )
+                    {
+                        return console.log("[Article] Unable to load delete external image.");
+                    }
+                    fs.unlink( path, err => {
+                        if (err) console.error(err);
+                        console.log( path + ' was deleted');
+                    });
+                break;
+                default: console.error("[Articles] Unknown image status.", status);
+            }
+        });
+        let changedArticle = {
+            title: title,
+            content: content,
+            modifiedAt: new Date(),
+            images: images
+        };
+        Article.findByIdAndUpdate( articleId, changedArticle, { new: true }, ( err, updatedArticle ) => {
             if (err) return next(err);
             res.send({ success: true, article: updatedArticle });
         });

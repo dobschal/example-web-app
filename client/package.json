@@ -41,6 +41,7 @@
     "socket.io-client": "^2.1.0",
     "sortablejs": "^1.7.0",
     "sweetalert": "^2.1.0",
+    "toastr": "^2.1.4",
     "translato": "^1.0.0"
   }
 }

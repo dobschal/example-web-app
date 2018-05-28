@@ -4,13 +4,14 @@ const fs    = require('fs');
 const config = require("../../config");
 const moment = require("moment");
 const websocket = require("../../service/websocket");
+const security = require("../../service/security");
 
 let path        = "articles/:id";
 let template    = fs.readFileSync( __dirname + "/../../../html/articles/detail.html", 'utf8' );
 let socketConnection = null;
 let viewModel   =
 {
-    authenticated: ko.observable(false),
+    userRole: ko.observable( "" ),
     isLoading: ko.observable(false),
     error: ko.observable( false ),
     isLoadingComments: ko.observable(false),
@@ -36,6 +37,13 @@ function onActive()
     
     this.titleEl.innerHTML = "Artikel";
     this.contentEl.innerHTML = template;
+
+    if( viewModel.userRole() === "user" )
+    {
+        this.topRightEl.innerHTML = `
+            <a href="#articles/editor/${viewModel.articleId}" class="btn btn-info pull-right"><i class="fa fa-pencil"></i></a>
+        `;
+    }
 
     viewModel.screenWidth( $(this.contentEl).width() );
     
@@ -75,8 +83,8 @@ function onActive()
 function onBefore( done, params )
 {
     $("title").text("Article Detail");
-    
-    viewModel.authenticated(window.localStorage.getItem("token") ? true : false );  
+
+    viewModel.userRole( security.getUserRole() );
     viewModel.articleId = params.id;  
     viewModel.isLoading(true);
     viewModel.isLoadingComments(true);

@@ -7,9 +7,16 @@
         "cancel": {
             "de": "Abbrechen",
             "en": "Cancel"
+        },
+        "error": {
+            "de": "Fehler",
+            "en": "Error"
         }
     },
     "errors": {
-        
+        "unableToLoadArticle": {
+            "de": "Konnte Artikel nicht laden. Bitte versuchen Sie es später erneut.",
+            "en": "Unable to load article. Please try again later."
+        }
     }
 }

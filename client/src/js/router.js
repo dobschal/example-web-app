@@ -44,7 +44,8 @@ var bindings = {
     win: window,
     sidebarEl: document.getElementById("sidebar-wrapper"),
     contentEl: document.getElementById("page-content"),
-    titleEl: document.getElementById("page-title")
+    titleEl: document.getElementById("page-title"),
+    topRightEl: document.getElementById("top-right-corner")
 };
 
 router.hooks({
@@ -65,21 +66,35 @@ mainCtrl.call( bindings, null );
 routeHandlers.forEach( routeHandler => {    
 
     let { 
-        path,     // String        
+        path,     // String
+        paths,    // Array<String>
         onActive, // function
         onBefore, // function, optional
         onAfter,  // function, optional
         onLeave   // function, optional
     } = routeHandler;
 
-    if( !path || !onActive ) throw new Error("[router.js] Missing path string or onActive method in RouteHandler!");
+    if( path && !paths )
+    {
+        paths = [path];
+    }
+    else if( !path && !paths )
+    {
+        throw new Error("[Route] Missing path string in route handler.", routeHandler);
+    }
+    
+    paths.forEach( pathName => {
 
-    let hooks = {};
-    if( typeof onBefore === "function" ) hooks.before = onBefore.bind( bindings );
-    if( typeof onLeave === "function" ) hooks.leave = onLeave.bind( bindings );
-    if( typeof onAfter === "function" ) hooks.after = onAfter.bind( bindings );
+        if( !onActive ) throw new Error("[Router] Missing onActive method in RouteHandler!", routeHandler);
 
-    router.on( path, onActive.bind( bindings ), hooks );
+        let hooks = {};
+        if( typeof onBefore === "function" ) hooks.before = onBefore.bind( bindings );
+        if( typeof onLeave === "function" ) hooks.leave = onLeave.bind( bindings );
+        if( typeof onAfter === "function" ) hooks.after = onAfter.bind( bindings );
+
+        router.on( pathName, onActive.bind( bindings ), hooks );
+
+    });
 });  
 
 router.notFound( () => {
