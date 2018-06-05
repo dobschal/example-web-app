@@ -6,7 +6,7 @@
 
     <div class="form-group">
         <label>Titel</label>
-        <input type="text" class="form-control" data-bind="value: title" placeholder="Title...">
+        <input type="text" class="form-control" data-bind="value: articleTitle" placeholder="Title...">
     </div>
 
     <div class="form-group">
@@ -15,7 +15,7 @@
             <button class="ql-bold">Bold</button>
             <button class="ql-italic">Italic</button>
         </div>
-        <div id="editor" data-bind="editorContent: { value: editorContent, editor: editor }">
+        <div id="editor" data-bind="editorContent: { value: articleContent, editor: editor }">
             <p>Hello World!</p>
         </div>
     </div>
@@ -23,10 +23,16 @@
     <div id="image-upload-zone" class="image-upload-zone">
         <span class="description">Dateien hierher ziehen</span>        
     </div>
-    <div id="image-upload-progress" class="image-upload-progress">Aktueller Fortschritt: 0%</div>
     <ul id="image-upload-preview" class="image-upload-preview"></ul>
-
-    <button class="btn btn-success mt-2" data-tl="general.save" data-bind="click: save"></button>
-    <a href="#articles" class="btn btn-default mt-2" data-tl="general.cancel"></button>
+    
+    <button 
+        class="btn btn-success mt-2" 
+        data-tl="general.save" 
+        data-bind="click: save, css: { 'in-progress disabled': isSendingRequest() }">
+    </button>
+    <a href="#articles" class="btn btn-default mt-2" data-tl="general.cancel"></a>
+    <!-- ko if: isSendingRequest() -->
+        <span class="pull-right mt-3 badge badge-warning" data-bind="text: uploadProgress"></span>
+    <!-- /ko -->
 
 </div>

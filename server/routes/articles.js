@@ -33,6 +33,7 @@ module.exports = function ( io ) {
         console.log("[articles.js] Got new uploaded file.", req.files, req.body);
         let { title, content, imageMeta } = req.body;
         let images = [];
+        imageMeta = Array.isArray( imageMeta ) ? imageMeta : [imageMeta];
         imageMeta.forEach( metaInfoString => {
             let metaInfoObject = JSON.parse( metaInfoString );
             let { status, file, sortIndex } = metaInfoObject;            
@@ -129,6 +130,7 @@ module.exports = function ( io ) {
     router.put("/articles/:id", security.protect(["user"]), uploader.array("images", 100), function( req, res, next ) {
         const articleId = req.params.id;
         let { title, content, imageMeta } = req.body;
+        imageMeta = Array.isArray( imageMeta ) ? imageMeta : [imageMeta];
         let images = [];
         const protocoll = req.connection.encrypted ? "https" : "http";
         imageMeta.forEach( metaInfoString => {
