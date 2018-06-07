@@ -1,13 +1,24 @@
 <div>
-    <form data-bind="submit: register">
+    <div class="card bg-light mb-2">
+        <div class="card-body" data-tl="register.description"></div>
+    </div>
+    <form data-bind="submit: register" id="registration-form">
         <div class="form-group">
-            <label>Username</label>
-            <input class="form-control" type="text" placeholder="Username" data-bind="value: username">
+            <label data-tl="general.username"></label>
+            <input class="form-control" type="text" data-tl-placeholder="general.username" data-bind="value: username" data-parsley-user-exists="true" required data-parsley-trigger="change">
         </div>
         <div class="form-group">
-            <label>Password</label>
-            <input class="form-control" type="text" placeholder="Password" data-bind="value: password">
+                <label data-tl="general.email"></label>
+                <input class="form-control" type="email" data-tl-placeholder="general.email" data-bind="value: email" required data-parsley-trigger="change">
+            </div>
+        <div class="form-group">
+            <label data-tl="general.password"></label>
+            <input id="password-input" class="form-control" type="password" data-tl-placeholder="general.password" minlength="8" data-bind="value: password" required data-parsley-trigger="change">
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <div class="form-group">
+            <label data-tl="general.passwordRepeat"></label>
+            <input class="form-control" type="password" data-tl-placeholder="general.password" required data-parsley-equalto="#password-input" data-parsley-trigger="change">
+        </div>
+        <button type="submit" class="btn btn-primary" data-tl="register.submit" data-bind="css: { 'in-progress disabled': isSendingRequest() }"></button>
     </form>
 </div>

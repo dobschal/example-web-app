@@ -11,12 +11,46 @@
         "error": {
             "de": "Fehler",
             "en": "Error"
+        },
+        "username": {
+            "de": "Benutzername",
+            "en": "Username"
+        },
+        "password": {
+            "de": "Passwort",
+            "en": "Password"
+        },
+        "passwordRepeat": {
+            "de": "Bitte Passwort wiederholen.",
+            "en": "Please repeat password."
+        },
+        "email": {
+            "de": "E-Mail",
+            "en": "E-Mail"
         }
     },
     "errors": {
         "unableToLoadArticle": {
             "de": "Konnte Artikel nicht laden. Bitte versuchen Sie es später erneut.",
             "en": "Unable to load article. Please try again later."
+        },
+        "internal": {
+            "de": "Es ist ein interner Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+            "en": "An internal error occured, please try again later."
+        }
+    },
+    "register": {
+        "title": {
+            "de": "Registrierung",
+            "en": "Registration"
+        },
+        "submit": {
+            "de": "Registrieren",
+            "en": "Register"
+        },
+        "description": {
+            "de": "Melden Sie sich jetzt an, um weitere Features nutzen zu können.",
+            "en": "Register now to use additional features."
         }
     }
 }

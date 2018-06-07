@@ -1,0 +1,26 @@
+body {
+    background-color: #efefef;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.container {
+    background-color: white;
+    border: solid 1px #c0c0c0;
+    border-radius: 8px;
+    margin: 10px auto;
+    width: 80%;
+    max-width: 320px;
+    padding: 10px;
+}
+
+.container > p {
+    font-size: 24px;
+    margin: 0px;
+}
+
+.container > div 
+{
+    line-height: 24px;
+    font-size: 17px;
+    color: #3b3b3b;
+}

@@ -1,8 +1,16 @@
-const $ = require("jquery");
-const ko = require("knockout");
-const security = require("./service/security");
-const event = require("./service/event");
-const translato = require("translato");
+const $             = require("jquery");
+const ko            = require("knockout");
+const config         = require("./config");
+const event         = require("./service/event");
+const moment        = require("moment");
+const security      = require("./service/security");
+const translato     = require("translato");
+const dictionary    = require("./dictionary.json");
+const parsley       = require("parsleyjs");
+
+//  Locale files for moment and parsley js
+require("../../node_modules/moment/locale/de");
+require("../../node_modules/parsleyjs/dist/i18n/de");
 
 let navigationModel =
 {
@@ -18,6 +26,8 @@ let userIsAuthenticated = false;
 function main()
 {
     _registerServiceWorker();
+    
+    _setLanguage();
     
     $("#menu-toggle").on("click", function(e) {
         e.preventDefault();
@@ -59,6 +69,29 @@ function _registerServiceWorker()
     {
         console.warn("[MainController] Service worker aren't available.");
     }
+}
+
+/**
+ *  Translate the whole page in a different language. Sets the language also in
+ *  the plugins.
+ *  @param {string} languageKey - "de", "en"
+ */
+function _setLanguage( languageKey )
+{
+    let languageToSet = config.defaultLanguage;
+    if( languageKey )
+    {
+        languageToSet = languageKey;
+        window.localStorage.setItem("languageKey", languageKey);
+    }
+    else if( window.localStorage.getItem("languageKey") )
+    {
+        languageToSet = window.localStorage.getItem("languageKey");
+    }
+    translato.setDictionary( dictionary );
+    translato.setLocale( languageToSet, true );
+    moment.locale( languageToSet );
+    parsley.setLocale( languageToSet );
 }
 
 /**
@@ -146,6 +179,13 @@ event.on("LeaveRoute", data => {
 
     console.log("[MainController] LeaveRoute event handler.");
 
+});
+
+/**
+ *  Sets the language for all plugins and translates the whole page.
+ */
+event.on("ChangeLanguage", languageKey => {
+    _setLanguage( languageKey );
 });
 
 module.exports = main;

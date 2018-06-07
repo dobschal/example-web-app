@@ -1,22 +1,9 @@
 require("./service/knockoutBindings/editorContent");
 require("./service/knockoutBindings/image");
-require("../../node_modules/moment/locale/de");
 
 const Navigo            = require("navigo");
-const translato         = require("translato");
-const moment            = require("moment");
 const mainCtrl          = require("./mainController");
-const dictionary        = require("./dictionary.json");
 const event             = require("./service/event");
-
-/**
- *  Use translato to translate page.
- *  Set language code and dictionary here.
- *  Dictionary is just a json, containing all translations.
- */
-translato.setLocale("de");
-translato.setDictionary( dictionary );
-moment.locale('de');
 
 /**
  *  All routeControllers. Order is important!

@@ -39,14 +39,15 @@
 * MomentJS
 * !Streams
 * !Cubic Bezier
-* !Drag and Drop Files
+* Drag and Drop Files
 * !Bootstrap Themes
-* !Font Awesome fa-spin
+* Font Awesome fa-spin
 * !Chart JS
 * !Todo Lists
 * Lightbox + 
 * !fadeIn image after load
 * Datenschutz DSGVO
+* Form Validation
 
 ### Server
 

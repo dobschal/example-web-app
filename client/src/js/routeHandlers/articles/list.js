@@ -1,11 +1,10 @@
 const $      = require("jquery");
 const ko     = require("knockout");
 const fs     = require('fs');
-const swal   = require("sweetalert");
 const moment = require("moment");
 const config  = require("../../config");
 const websocket = require("../../service/websocket");
-const lightbox = require("lightbox2");
+require("lightbox2");
 
 let path        = "articles";
 let template    = fs.readFileSync(__dirname + "/../../../html/articles/list.html", 'utf8');
@@ -74,7 +73,7 @@ function onBefore( done, params )
         socketConnection = connection;        
     })
     .catch(console.error)
-    .finally(() => {
+    .always(() => {
         done();
     });
 }

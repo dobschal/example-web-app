@@ -13,7 +13,7 @@ const ImageUploadArea = require("../../components/ImageUploadArea");
 let paths       = [ "articles/editor", "articles/editor/:articleId" ];
 let template    = fs.readFileSync(__dirname + "/../../../html/articles/editor.html", 'utf8');
 let router      = null;
-let loadedImages= [];
+let loadedImages = [];
 let viewModel   = {
     articleTitle: ko.observable(""),
     articleContent: ko.observable(""),
