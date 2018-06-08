@@ -1,0 +1,37 @@
+.article
+{
+    .image
+    {
+        background-color: #efefef;
+        border-radius: 4px;
+        height: 200px;
+        display: block;
+        overflow: hidden;
+        position: relative;
+        img
+        {
+            height: 200px;
+        }
+        &:hover
+        {
+            background-color: #000000;            
+            &::before
+            {
+                content: "Click to open";
+                text-align: center;
+                line-height: 20px;
+                font-size: 20px;
+                color: white;
+                display: block;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            img
+            {
+                opacity: 0.5;
+            }
+        }
+    }
+}

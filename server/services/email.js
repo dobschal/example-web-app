@@ -4,18 +4,18 @@ const path          = require("path");
 
 const transporter = nodemailer.createTransport({
     pool: true,
-    host: 'smtp.1und1.de',
-    port: 587,
+    host: process.env.EMAILHOST,
+    port: process.env.EMAILPORT,
     secure: false, // use TLS
     auth: {
-        user: 'test@test.de',
-        pass: ''
+        user: process.env.EMAILUSER,
+        pass: process.env.EMAILPASSWORD
     }
 });
 
 const email = new Email({
     message: {
-        from: 'test@test.de'
+        from: process.env.EMAIL
     },
     send: true, // If set to false, this will display the email in the browser for debugging!!!
     transport: transporter,
@@ -33,17 +33,17 @@ const email = new Email({
     }
 });
 
-function sendRegistrationEmail()
+function sendRegistrationEmail( username, emailOfUser )
 {
 
     email
         .send({
             template: 'registration',
             message: {
-                to: 'test@test.de'
+                to: emailOfUser
             },
             locals: {
-                name: 'Sascha'
+                name: username
             }
         })
         .then(console.log)

@@ -11,28 +11,31 @@ let viewModel    =
 {
     username: ko.observable(""),
     password: ko.observable(""),
-    login
+    login,
+    isLoading: ko.observable( false )
 };
-let context = null;
+let router = null;
 
 function onActive( params, query )
 {
-    console.log("[login.js] View ready");
+    console.log("[Login] View ready");
     this.titleEl.innerHTML = "Login";
     this.contentEl.innerHTML = template;
     ko.applyBindings( viewModel, this.contentEl );
+    
+    _prefillUsername();
 }
 
-function onBefore( done, params )
+function onBefore( done )
 {
-    console.log("[login.js] Enter view");
-    context = this;
-    done()
+    console.log("[Login] Enter view");
+    router = this.router;
+    done();
 }
 
 function onLeave()
 {
-    console.log("[login.js] Left view");
+    console.log("[Login] Left view");
 }
 
 function login( data )
@@ -40,19 +43,31 @@ function login( data )
     let username = viewModel.username();
     let password = viewModel.password();
     if( !username || !password ) return swal("Eingabe fehlt", "Bitte gibt Username und Passwort ein!", "error");
-    $("#submit-button").addClass("in-progress");
+    viewModel.isLoading( true );
     $.post( config.serverUrl + "/login", { username, password }).then( response => {
-        console.log( "[login.js] Logged in successfully. ", response );
+        console.log( "[Login] Logged in successfully. ", response );
         window.localStorage.setItem("token", response.token);
+        window.localStorage.setItem("username", username );        
         event.broadcast("UserChanged");
-        swal("Erfolgreich", "Nutzer wurde angemeldet!", "success");
-        context.router.navigate("#");
+        swal("Erfolgreich", "Nutzer wurde angemeldet!", "success").then( () => {            
+            router.navigate("#");
+        });        
     }).catch( error => {
-        console.error( "[login.js] Error on logging in.", error );
-        swal("Fehler", "Nutzer konnte nicht angemeldet werden!", "error");
-    }).finally( () => {
-        $("#submit-button").removeClass("in-progress");
+        console.error( "[Login] Error on logging in.", error );
+        swal("Fehler", "Nutzer konnte nicht angemeldet werden!", "error").then( () => {
+            $("#username-input").focus();
+        });
+    }).always( () => {
+        viewModel.isLoading( false );
     });
+}
+
+function _prefillUsername()
+{
+    if( window.localStorage.getItem("username") )
+    {
+        viewModel.username( window.localStorage.getItem("username") );
+    }
 }
 
 module.exports = { path, onActive, onBefore, onLeave };

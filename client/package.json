@@ -35,6 +35,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.6.1",
     "gulp-uglify-es": "^1.0.1",
+    "hammerjs": "^2.0.8",
     "lightbox2": "^2.10.0",
     "moment": "^2.22.1",
     "parsleyjs": "^2.8.1",

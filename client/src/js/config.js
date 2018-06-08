@@ -1,4 +1,4 @@
 module.exports = {
-    serverUrl: "http://localhost:3000",
-    defaultLanguage: "de"
+    "serverUrl": "https://example-web-app.herokuapp.com",
+    "defaultLanguage": "de"
 };

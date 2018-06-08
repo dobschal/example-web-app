@@ -5,6 +5,8 @@ const config = require("../../config");
 const moment = require("moment");
 const websocket = require("../../service/websocket");
 const security = require("../../service/security");
+const translato = require("translato");
+const event = require("../../service/event");
 
 let path        = "articles/:id";
 let template    = fs.readFileSync( __dirname + "/../../../html/articles/detail.html", 'utf8' );
@@ -33,44 +35,13 @@ let viewModel   =
 
 function onActive()
 {
-    console.log("[articles/detail.js] View ready");
+    console.log("[ArticleDetail] View ready");
     
-    this.titleEl.innerHTML = "Artikel";
-    this.contentEl.innerHTML = template;
+    _setContent( this.contentEl );
+    _setTopRightCornerAction( this.topRightEl );
 
-    if( viewModel.userRole() === "user" )
-    {
-        this.topRightEl.innerHTML = `
-            <a href="#articles/editor/${viewModel.articleId}" class="btn btn-info pull-right"><i class="fa fa-pencil"></i></a>
-        `;
-    }
-
-    viewModel.screenWidth( $(this.contentEl).width() );
-    
-    ko.applyBindings( viewModel, this.contentEl );
-
-    $.get( config.serverUrl + "/articles/" + viewModel.articleId ).then( response => {
-        let { article } = response;
-        viewModel.title( article.title );
-        viewModel.content( article.content );
-        viewModel.modifiedAt( article.modifiedAt );
-        viewModel.images( article.images );
-    }).catch( err => {
-        console.error( err );
-        viewModel.error("Inhalt konnte nicht geladen werden.");
-    }).always( () => {        
-        viewModel.isLoading( false );
-    });
-
-    $.get(`${config.serverUrl}/articles/${viewModel.articleId}/comments`).then( response => {
-        let { articleComments } = response;
-        viewModel.comments( articleComments );
-    }).catch( err => {
-        console.error( err );
-        viewModel.commentsError("Kommentare konnten nicht geladen werden.");
-    }).always( () => {        
-        viewModel.isLoadingComments( false );
-    });
+    _loadArticle();
+    _loadComments();
 
     if( socketConnection !== null )
     {
@@ -82,7 +53,7 @@ function onActive()
 
 function onBefore( done, params )
 {
-    $("title").text("Article Detail");
+    event.broadcast("ChangeTitle", { title: "article.title", isTranslationKey: true });
 
     viewModel.userRole( security.getUserRole() );
     viewModel.articleId = params.id;  
@@ -93,7 +64,7 @@ function onBefore( done, params )
     .then( connection => {
         socketConnection = connection;        
     })
-    .catch(err => console.warn("[Articles] Could not get socket connection.", err))
+    .catch(err => console.warn("[ArticleDetail] Could not get socket connection.", err))
     .finally(() => {
         done();
     });
@@ -101,7 +72,7 @@ function onBefore( done, params )
 
 function onLeave()
 {
-    console.log("[articles/detail.js] Left view");
+    console.log("[ArticleDetail] Left view");
     if( socketConnection !== null )
     {
         socketConnection.removeAllListeners();
@@ -115,6 +86,62 @@ function saveComment()
     $.post(`${config.serverUrl}/articles/${viewModel.articleId}/comment`, { content })
         .then( console.log )
         .catch( console.error );
+}
+
+/**
+ *  Set the content element and apply the translated template.
+ *  Set the screen width to the viewModel and apply knockout js.
+ *  @param {DOMNode} contentEl 
+ */
+function _setContent( contentEl )
+{
+    contentEl.innerHTML = translato.translateHTML(template);
+    viewModel.screenWidth( $(contentEl).width() );
+    ko.applyBindings( viewModel, contentEl );
+}
+
+/**
+ *  Apply a button or an other action item to the top right
+ *  DOMNode element in the header.
+ *  @param {DOMNode} topRightEl 
+ */
+function _setTopRightCornerAction( topRightEl )
+{
+    if( viewModel.userRole() === "user" )
+    {
+        topRightEl.innerHTML = `
+            <a href="#articles/editor/${viewModel.articleId}" class="btn btn-info pull-right"><i class="fa fa-pencil"></i></a>
+        `;
+    }
+}
+
+function _loadArticle()
+{
+    $.get( config.serverUrl + "/articles/" + viewModel.articleId ).then( response => {
+        let { article } = response;
+        viewModel.title( article.title );
+        viewModel.content( article.content );
+        viewModel.modifiedAt( article.modifiedAt );
+        viewModel.images( article.images );
+    }).catch( err => {
+        console.error( err );
+        viewModel.error("Inhalt konnte nicht geladen werden.");
+    }).always( () => {        
+        viewModel.isLoading( false );
+    });
+}
+
+function _loadComments()
+{
+    $.get(`${config.serverUrl}/articles/${viewModel.articleId}/comments`).then( response => {
+        let { articleComments } = response;
+        viewModel.comments( articleComments );
+    }).catch( err => {
+        console.error( err );
+        viewModel.commentsError("Kommentare konnten nicht geladen werden.");
+    }).always( () => {        
+        viewModel.isLoadingComments( false );
+    });
 }
 
 module.exports = { path, onActive, onBefore, onLeave };

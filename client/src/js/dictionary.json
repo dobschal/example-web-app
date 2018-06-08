@@ -52,5 +52,21 @@
             "de": "Melden Sie sich jetzt an, um weitere Features nutzen zu können.",
             "en": "Register now to use additional features."
         }
+    },
+    "article": {
+        "title": {
+            "de": "Artikel",
+            "en": "Article"
+        },
+        "isLoading": {
+            "de": "Artikel wird geladen...",
+            "en": "Loading article..."
+        }
+    },
+    "comments": {
+        "isLoading": {
+            "de": "Kommentare werden geladen...",
+            "en": "Loading comments..."
+        }
     }
 }

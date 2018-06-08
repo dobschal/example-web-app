@@ -26,7 +26,7 @@
 * knockoutjs
     - show data
 * templates via browserif + brfs
-* TextEditor
+* TextEditor --> Quill
 * Image Upload
 * Offline Available
 * !Limit response size GET /articles?limit=100 or /articles?from=2018-07-04&to=now
@@ -38,16 +38,19 @@
 * animations
 * MomentJS
 * !Streams
-* !Cubic Bezier
+* Cubic Bezier --> http://cubic-bezier.com/#.19,.74,.83,.67
 * Drag and Drop Files
-* !Bootstrap Themes
+* Bootstrap Themes
 * Font Awesome fa-spin
 * !Chart JS
 * !Todo Lists
-* Lightbox + 
-* !fadeIn image after load
-* Datenschutz DSGVO
-* Form Validation
+* Lightbox
+* fadeIn image after load --> image knockout binding
+* !Datenschutz DSGVO
+* Form Validation - parsleyjs
+* !Swiper
+* !Google Maps
+* !Active Menu Item
 
 ### Server
 
@@ -61,6 +64,6 @@
 * Image Upload
 * !Environment Variables
 * !Push Notifications
-* !E-Mail Templates
+* E-Mail Templates
 * !CRON Jobs
 * !Fav icon

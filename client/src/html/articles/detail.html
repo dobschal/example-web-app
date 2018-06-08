@@ -1,12 +1,14 @@
 <!-- ko if: isLoading() --> 
-<div class="in-progress"></div>
+<div class="in-progress with-text black pt-4 pb-4" data-tl="article.isLoading"></div>
 <!-- /ko -->
 
 <!-- ko if: !isLoading() && !error()--> 
 <div class="animation-fade-in article">
-    <a data-bind="attr: { href: images()[0].file, 'data-title': title }" data-lightbox="article-image" class="image mb-2">
-        <img data-bind="attr: { src: images()[0].file + '?height=200&width=' + screenWidth() }"></img>
-    </a>
+    <!-- ko if: images().length > 0 -->
+        <a data-bind="attr: { href: images()[0].file, 'data-title': title }" data-lightbox="article-image" class="image mb-2">
+            <img data-bind="image: { src: images()[0].file + '?height=200&width=' + screenWidth() }"></img>
+        </a>
+    <!-- /ko -->
     <h2 data-bind="text: title"></h2>
     <small data-bind="text: moment(modifiedAt()).calendar()"></small>
     <article data-bind="html: content"></article>
@@ -23,7 +25,7 @@
     <h4>Comments</h4>
 
     <!-- ko if: isLoadingComments() --> 
-    <div class="in-progress"></div>
+    <div class="in-progress with-text black pt-4 pb-4" data-tl="comments.isLoading"></div>
     <!-- /ko -->
 
     <!-- ko if: !isLoadingComments() && !commentsError() --> 

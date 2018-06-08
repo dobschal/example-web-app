@@ -1,3 +1,5 @@
+@import "bootstrap-theme";
+
 @import "../../node_modules/bootstrap/scss/bootstrap";
 @import "../../node_modules/font-awesome/scss/font-awesome";
 @import "../../node_modules/quill/dist/quill.snow";
@@ -7,10 +9,10 @@
 
 @import "toast";
 @import "animation";
-@import "article";
-@import "article-list";
+@import "article/detail";
+@import "article/list";
 @import "image-upload";
-@import "lightbox";
+@import "login";
 @import "progress-spinner";
 @import "sidebar";
 @import "topbar";

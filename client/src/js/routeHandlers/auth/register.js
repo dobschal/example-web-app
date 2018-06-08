@@ -54,16 +54,19 @@ function register( data )
         let email = viewModel.email();
         viewModel.isSendingRequest( true );
         $.post( config.serverUrl + "/register", { username, password, email }).then( response => {
-            console.log( response );
-            swal("Erfolgreich", "Nutzer wurde registriert!", "success");        
-            router.navigate("login");
+            console.log( "[Registration] Successfull: ", response );
+            window.localStorage.setItem("username", username);
+            swal("Erfolgreich", "Nutzer wurde registriert!", "success").then( () => {
+                router.navigate( `login` );
+            });
         }).catch( error => {
-            console.error( error );
+            console.error( "[Registration] Error on response: ", error );
             swal("Fehler", "Nutzer konnte nicht registriert werden!", "error");
         }).always( () => {
             viewModel.isSendingRequest( false );
         });
     });
+    return false;
 }
 
 function _addFormValidator()

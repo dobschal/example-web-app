@@ -10,10 +10,10 @@
   
   #wrapper {
     padding-left: 0;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    -webkit-transition: all 0.5s cubic-bezier(.64,.41,0,1.36);
+    -moz-transition: all 0.5s cubic-bezier(.64,.41,0,1.36);
+    -o-transition: all 0.5s cubic-bezier(.64,.41,0,1.36);
+    transition: all 0.5s cubic-bezier(.64,.41,0,1.36);
   }
   
   #wrapper.toggled {
@@ -29,11 +29,11 @@
     margin-left: -250px;
     overflow-y: auto;
     background-color: rgb(34, 37, 42);
-    box-shadow: inset -16px 0px 16px -16px black;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    box-shadow: inset -16px 0px 10px -10px #000000bd;
+    -webkit-transition: all 0.5s cubic-bezier(.64,.41,0,1.36);
+    -moz-transition: all 0.5s cubic-bezier(.64,.41,0,1.36);
+    -o-transition: all 0.5s cubic-bezier(.64,.41,0,1.36);
+    transition: all 0.5s cubic-bezier(.64,.41,0,1.36);
   }
   
   #wrapper.toggled #sidebar-wrapper {
@@ -53,10 +53,28 @@
   
   
   /* Sidebar Styles */
+  .sidebar-brand {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 250px;
+    height: 140px;
+
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 20px auto;
+      display: block;
+      box-shadow: 20px 0 20px -20px black, -20px 0 20px -20px black;
+    }
+
+  }
   
   .sidebar-nav {
     position: absolute;
-    top: 0;
+    top: 140px;
     width: 250px;
     margin: 0;
     padding: 0;
@@ -64,24 +82,37 @@
   }
   
   .sidebar-nav li {
-    text-indent: 20px;
+    // text-indent: 20px;    
     line-height: 40px;
   }
   
   .sidebar-nav li a {
+    padding-left: 20px;
     display: block;
     text-decoration: none;
-    color: #999999;
-  }
+    color: #787280;
+    font-weight: 300;
+    background-color: rgba(0, 0, 0, 0.0);
+    transition: padding-left 0.5s ease-out;
   
-  .sidebar-nav li a:hover {
-    text-decoration: none;
-    color: #fff;
-    background: rgba(255, 255, 255, 0.2);
-  }
-  
-  .sidebar-nav li a:active, .sidebar-nav li a:focus {
-    text-decoration: none;
+    &:hover {
+      text-decoration: none;
+      color: #8933ffd1;
+      background-color: rgba(0, 0, 0, 0.18);
+      padding-left: 30px;
+    }
+
+    &:active, &:focus {
+      text-decoration: none;
+    }
+
+    span.fa // icon in link
+    {
+      display: inline-block;
+      margin-right: 5px;
+      width: 20px;
+    }
+
   }
   
   .sidebar-nav>.sidebar-brand {

@@ -7,6 +7,7 @@ const security      = require("./service/security");
 const translato     = require("translato");
 const dictionary    = require("./dictionary.json");
 const parsley       = require("parsleyjs");
+const Hammer        = require("hammerjs");
 
 //  Locale files for moment and parsley js
 require("../../node_modules/moment/locale/de");
@@ -43,7 +44,27 @@ function main()
         {
             $("#wrapper").addClass("toggled");
         }
-    });   
+    }); 
+    
+    let swipeDirections = [
+        { value: 2, name: "toLeft" }, 
+        { value: 4, name: "toRight" }
+    ];
+
+    var hammertime = new Hammer( $("#wrapper")[0] );
+    hammertime.on('pan', function(e) {
+        console.log("[MainController] User is swiping.");
+        switch( e.direction )
+        {
+            case 2: // To Left
+                $("#wrapper").removeClass("toggled");
+            break;
+            case 4: // To Right
+                $("#wrapper").addClass("toggled");
+            break;
+            default: console.log("Ignore unwanted swipe gesture.");
+        }
+    });
 
     ko.applyBindings( navigationModel, this.sidebarEl );
 }
@@ -101,8 +122,8 @@ event.on("UserChanged", () => {
     let userRole = security.getUserRole();
     let defaultNavItems =
     [
-        { href: "#", name: "Start" },
-        { href: "#articles", name: "Articles" },
+        { href: "#", name: "Start", icon: "fa fa-home" },
+        { href: "#articles", name: "Articles", icon: "fa fa-book" },
         { href: "#products", name: "Products" }
     ];
     switch( userRole )
@@ -116,8 +137,8 @@ event.on("UserChanged", () => {
         ]));
         break;
         default: navigationModel.items(defaultNavItems.concat([
-            { href: "#login", name: "Login" },
-            { href: "#register", name: "Register" }
+            { href: "#login", name: "Login", icon: "fa fa-user" },
+            { href: "#register", name: "Register", icon: "fa fa-user-plus" }
         ]));
     }
 });

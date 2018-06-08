@@ -73,7 +73,7 @@ function onBefore( done, params )
         socketConnection = connection;        
     })
     .catch(console.error)
-    .always(() => {
+    .finally(() => {
         done();
     });
 }

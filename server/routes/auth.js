@@ -23,8 +23,6 @@ module.exports = function( io ) {
 
     router.get("/user/:username", function( req, res, next) {
         const { username } = req.params;
-        
-        email.sendRegistrationEmail();
 
         User.findOne({ username: username }, (err, userFromDB) => {
             if (err)
@@ -44,7 +42,11 @@ module.exports = function( io ) {
     });
 
     router.post('/register', function(req, res, next) {
-        const { username, email, password } = req.body;
+        const { username, email: emailOfUser, password } = req.body;
+
+        email.sendRegistrationEmail( username, emailOfUser );
+
+
         User.findOne({ username: username }, (err, userFromDB) => {
             if (err)
             {
@@ -60,7 +62,7 @@ module.exports = function( io ) {
             const hashedPassword = security.hashPassword( password );
             let user = new User({ 
                 username, 
-                email, 
+                email: emailOfUser, 
                 password: hashedPassword, 
                 userRole: "user",                 
                 registeredAt: new Date() 
