@@ -48,7 +48,7 @@
 * fadeIn image after load --> image knockout binding
 * !Datenschutz DSGVO
 * Form Validation - parsleyjs
-* !Swiper
+* Swiper --> HammerJS to toggle Sidebar
 * !Google Maps
 * !Active Menu Item
 

@@ -4,18 +4,18 @@ const path          = require("path");
 
 const transporter = nodemailer.createTransport({
     pool: true,
-    host: process.env.EMAILHOST,
-    port: process.env.EMAILPORT,
+    host: process.env.EmailHost,
+    port: process.env.EmailPort,
     secure: false, // use TLS
     auth: {
-        user: process.env.EMAILUSER,
-        pass: process.env.EMAILPASSWORD
+        user: process.env.EmailUser,
+        pass: process.env.EmailPassword
     }
 });
 
 const email = new Email({
     message: {
-        from: process.env.EMAIL
+        from: process.env.EmailSender
     },
     send: true, // If set to false, this will display the email in the browser for debugging!!!
     transport: transporter,
