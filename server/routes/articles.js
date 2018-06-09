@@ -31,35 +31,39 @@ module.exports = function ( io ) {
 
     router.post('/articles', security.protect(["user"]), uploader.array("images", 100), function(req, res, next) {
         console.log("[articles.js] Got new uploaded file.", req.files, req.body);
-        let { title, content, imageMeta } = req.body;
-        let images = [];
-        imageMeta = Array.isArray( imageMeta ) ? imageMeta : [imageMeta];
-        imageMeta.forEach( metaInfoString => {
-            let metaInfoObject = JSON.parse( metaInfoString );
-            let { status, file, sortIndex } = metaInfoObject;            
-            if( typeof status === "string" && status.toLowerCase() === "wanttoupload" )
-            {                
-                let uploadedFileInfo = req.files.find( uploadedFile => {
-                    return uploadedFile.originalname === file;
-                });
-                if( uploadedFileInfo )
-                {
-                    let { path } = uploadedFileInfo;
-                    let articleImage = {
-                        file: path,
-                        status: "uploaded",
-                        sortIndex: sortIndex,
-                        modifiedAt: new Date()
-                    };
-                    images.push( articleImage );
+        try {
+            let { title, content, imageMeta } = req.body;
+            let images = [];
+            imageMeta = Array.isArray( imageMeta ) ? imageMeta : [imageMeta];
+            imageMeta.forEach( metaInfoString => {
+                let metaInfoObject = JSON.parse( metaInfoString );
+                let { status, file, sortIndex } = metaInfoObject;            
+                if( typeof status === "string" && status.toLowerCase() === "wanttoupload" )
+                {                
+                    let uploadedFileInfo = req.files.find( uploadedFile => {
+                        return uploadedFile.originalname === file;
+                    });
+                    if( uploadedFileInfo )
+                    {
+                        let { path } = uploadedFileInfo;
+                        let articleImage = {
+                            file: path,
+                            status: "uploaded",
+                            sortIndex: sortIndex,
+                            modifiedAt: new Date()
+                        };
+                        images.push( articleImage );
+                    }
                 }
-            }
-        });
-        let myArticle = new Article({ title: title, content: content, modifiedAt: new Date(), images: images });
-        myArticle.save((err, storedArticle) => {
-            if (err) return next( err );
-            res.send({ success: true, info: "Saved article in database.", article: storedArticle });
-        });
+            });
+            let myArticle = new Article({ title: title, content: content, modifiedAt: new Date(), images: images });
+            myArticle.save((err, storedArticle) => {
+                if (err) return next( err );
+                res.send({ success: true, info: "Saved article in database.", article: storedArticle });
+            });
+        } catch(e) {
+            console.error("[Article] Error on posting article: ", e);
+        }
     });
 
     router.get('/articles', function(req, res, next) {
