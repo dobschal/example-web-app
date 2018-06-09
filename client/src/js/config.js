@@ -1,4 +1,4 @@
 module.exports = {
-    serverUrl: "https://localhost:3001",
+    serverUrl: "http://localhost:3001",
     defaultLanguage: "de"
 };
