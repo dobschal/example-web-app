@@ -77,5 +77,5 @@ io.on('connection', function( connection ) {
 // TODO: put port into environment variables
 let port = process.env.PORT || 3000;
 http.listen( port, () => {
-  console.log('[app.js] App is started and is listening to port ' + port);
+  console.log('[App] Listen to port ' + port);
 });
