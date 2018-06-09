@@ -1,3 +1,4 @@
+const event = require("../../service/event");
 
 const path = "*";
 
@@ -11,6 +12,7 @@ function onActive()
 function onBefore( done )
 {
     console.log("[start.js] Enter view");
+    event.broadcast("ChangeTitle", { title: "Start" });
     done();
 }
 
