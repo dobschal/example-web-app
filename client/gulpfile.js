@@ -22,6 +22,16 @@ const gulp    = require('gulp'),
     htmlLint = require('gulp-html-lint');
 
 //  replacment of placeholders
+gulp.task('use-prod-api', ["compress-scripts"], function(){
+    gulp.src([buildPath + '/js/app.min.js'])
+    .pipe(replace('#SERVER_URL#', 'http://www.dobschal.eu:3001'))
+    .pipe(gulp.dest( buildPath + "/js/" ));
+});
+gulp.task('use-dev-api', ["compile-scripts"], function(){
+    gulp.src([buildPath + '/js/app.js'])
+    .pipe(replace('#SERVER_URL#', 'http://localhost:3000'))
+    .pipe(gulp.dest( buildPath + "/js/" ));
+});
 gulp.task('use-compressed-app', ["copy-files"], function(){
     gulp.src([buildPath + '/index.html'])
     .pipe(replace('#APP_SOURCE#', './js/app.min.js'))
@@ -113,27 +123,9 @@ gulp.task('compress-scripts', ['compile-scripts'], function () {
         .pipe(gulp.dest(buildPath + "/js"));
 });
 
-gulp.task('watch', function () {
-    gulp.watch(sassFiles + '**/*.scss', [
-        'compile-sass', 
-        'copy-files', 
-        'update-service-worker-version'
-    ]);
-    gulp.watch(filesToCopy, [
-        'copy-files', 
-        'update-service-worker-version'
-    ]);
-    gulp.watch(jsFiles + '**/*.js', [
-        'compile-scripts', 
-        'copy-files',
-        "use-uncompressed-app",        
-        'update-service-worker-version'
-    ]);
-    gulp.watch(htmlFiles, [
-        'compile-scripts', 
-        'copy-files',
-        "use-uncompressed-app",        
-        'update-service-worker-version'
+gulp.task('watch-prod', function () {
+    gulp.watch('./src/**', [
+        'build-prod'
     ]);
 });
 
@@ -145,6 +137,7 @@ gulp.task('build-dev', [
     "lint-templates",
     "lint-scripts",
     'compile-scripts',
+    "use-dev-api",
     "use-uncompressed-app",
     'update-service-worker-version'
 ]);
@@ -158,17 +151,22 @@ gulp.task('build-prod', [
     "lint-scripts",
     'compile-scripts',    
     'compress-scripts',
+    "use-dev-api", // app.js, localhost
+    "use-prod-api", // app.min.js, online
     "use-compressed-app",
     'update-service-worker-version'
 ]);
 
 gulp.task('dev', [
-    "build-dev",    
-    "watch"
+    "build-dev"
 ]);
 
 gulp.task('prod', [
     "build-prod"
+]);
+
+gulp.task('watch', [
+    "watch-prod"
 ]);
 
 gulp.task('server', [

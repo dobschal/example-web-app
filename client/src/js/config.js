@@ -1,4 +1,4 @@
 module.exports = {
-    serverUrl: "http://www.dobschal.eu:3001",
+    serverUrl: "#SERVER_URL#", // will be replaced by gulp build task
     defaultLanguage: "de"
 };
