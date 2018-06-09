@@ -30,14 +30,14 @@ class ImageUploadArea
         }
 
         this._init();
-    };
+    }
 
     _log()
     {
         if( this.debug ) console.log( JSON.stringify( arguments ) );
-    };
+    }
     
-    _init( incomingImages )
+    _init()
     {
         this._log("[ImageUploadArea] Initialized upload zone.");
 
@@ -59,7 +59,7 @@ class ImageUploadArea
             }
         });  
         this._previewUploadImages();
-    };
+    }
 
     _handleFileDropEvent( event )
     {
@@ -130,9 +130,7 @@ class ImageUploadArea
         
     _appendImage( imageSrc, id )
     {
-        let removeButtonEl = document.createElement("button");
-        let listEl = document.createElement("li");
-        let imageEl = document.createElement("img");
+        let { removeButtonEl, listEl, imageEl } = ImageUploadArea.createThumbnailElements();
 
         removeButtonEl.className = "btn btn-link btn-sm";
         removeButtonEl.innerHTML = `<i class="fa fa-trash"></i>`;
@@ -158,6 +156,14 @@ class ImageUploadArea
         listEl.appendChild( removeButtonEl );
 
         this.imagePreview.appendChild( listEl );
+    }
+
+    static createThumbnailElements()
+    {
+        let removeButtonEl = document.createElement("button");
+        let listEl = document.createElement("li");
+        let imageEl = document.createElement("img");
+        return { removeButtonEl, listEl, imageEl };
     }
 }
 

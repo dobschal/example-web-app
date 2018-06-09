@@ -22,13 +22,13 @@ self.addEventListener('install', function(e) {
     // e.waitUntil Delays the event until the Promise is resolved
     e.waitUntil(
 
-    	// Open the cache
-	    caches.open(cacheName).then(function(cache) {
-
-	    	// Add all the default files to the cache
+		// Open the cache
+		caches.open(cacheName).then(function(cache) {
+			
+			// Add all the default files to the cache
 			console.log('[ServiceWorker] Caching cacheFiles');
 			return cache.addAll(cacheFiles);
-	    }).catch( function(err) {
+		}).catch( function(err) {
 			console.error("[ServiceWorker] Unable to open cache.", err );
 		})
 	); // end e.waitUntil
@@ -40,7 +40,7 @@ self.addEventListener('activate', function(e) {
 
     e.waitUntil(
 
-    	// Get all the cache keys (cacheName)
+		// Get all the cache keys (cacheName)
 		caches.keys().then(function(cacheNames) {
 			return Promise.all(cacheNames.map(function(thisCacheName) {
 

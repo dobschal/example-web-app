@@ -45,7 +45,7 @@ function onLeave()
     console.log("[register.js] Left view");
 }
 
-function register( data )
+function register()
 {
     formValidator.whenValid().then( () => {
         console.log("[Registration] Register user...");

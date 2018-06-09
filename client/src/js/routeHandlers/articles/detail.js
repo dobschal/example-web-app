@@ -62,10 +62,11 @@ function onBefore( done, params )
 
     websocket.connect()
     .then( connection => {
-        socketConnection = connection;        
+        socketConnection = connection;
+        done();
     })
-    .catch(err => console.warn("[ArticleDetail] Could not get socket connection.", err))
-    .finally(() => {
+    .catch(err => {
+        console.warn("[ArticleDetail] Could not get socket connection.", err);
         done();
     });
 }
@@ -91,7 +92,8 @@ function saveComment()
 /**
  *  Set the content element and apply the translated template.
  *  Set the screen width to the viewModel and apply knockout js.
- *  @param {DOMNode} contentEl 
+ *  @param {DOMNode} contentEl - Main DOMNode where content is displayed
+ *  @returns {void}
  */
 function _setContent( contentEl )
 {
@@ -103,7 +105,8 @@ function _setContent( contentEl )
 /**
  *  Apply a button or an other action item to the top right
  *  DOMNode element in the header.
- *  @param {DOMNode} topRightEl 
+ *  @param {DOMNode} topRightEl - DOMNode in the top right corner of the header
+ *  @returns {void}
  */
 function _setTopRightCornerAction( topRightEl )
 {

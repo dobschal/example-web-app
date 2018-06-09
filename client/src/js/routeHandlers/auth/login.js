@@ -29,7 +29,8 @@ function onActive( params, query )
 function onBefore( done )
 {
     console.log("[Login] Enter view");
-    router = this.router;
+    let { router: bindedRouter } = this;
+    router = bindedRouter;
     done();
 }
 
@@ -38,7 +39,7 @@ function onLeave()
     console.log("[Login] Left view");
 }
 
-function login( data )
+function login()
 {
     let username = viewModel.username();
     let password = viewModel.password();

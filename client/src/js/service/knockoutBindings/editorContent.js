@@ -17,11 +17,11 @@ ko.bindingHandlers.editorContent =
 {
     init: ( element, valueAccessor ) =>
     {
-        if( !valueAccessor().editor || !valueAccessor().editor instanceof Quill )
+        if( !valueAccessor().editor || !(valueAccessor().editor instanceof Quill) )
         {
             throw new Error("[knockout-editor.js] Property editor of viewModel needs to be an instance of Quill.");
         }
-        valueAccessor().editor.on('text-change', (delta, oldDelta, source) => {
+    valueAccessor().editor.on('text-change', () => {
             valueAccessor().value( valueAccessor().editor.root.innerHTML );
         });
     },

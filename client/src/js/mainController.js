@@ -45,11 +45,6 @@ function main()
             $("#wrapper").addClass("toggled");
         }
     }); 
-    
-    let swipeDirections = [
-        { value: 2, name: "toLeft" }, 
-        { value: 4, name: "toRight" }
-    ];
 
     var hammertime = new Hammer( $("#wrapper")[0] );
     hammertime.on('pan', function(e) {
@@ -96,6 +91,7 @@ function _registerServiceWorker()
  *  Translate the whole page in a different language. Sets the language also in
  *  the plugins.
  *  @param {string} languageKey - "de", "en"
+ *  @returns {void}
  */
 function _setLanguage( languageKey )
 {
@@ -113,6 +109,25 @@ function _setLanguage( languageKey )
     translato.setLocale( languageToSet, true );
     moment.locale( languageToSet );
     parsley.setLocale( languageToSet );
+}
+
+/**
+ *  Check if a auth token is stored. If true, set the
+ *  token as auth header.
+ *  Broadcast the userChanged event.
+ *  @returns {void}
+ */
+function _updateUserAuthorization()
+{
+    let token = window.localStorage.getItem("token");
+    userIsAuthenticated = token === null ? false : true;
+    $.ajaxSetup({ 
+        headers:
+        { 
+            'Authorization': token === null ? "" : "Bearer " + token 
+        }
+    });    
+    event.broadcast("UserChanged", userIsAuthenticated);
 }
 
 /**
@@ -175,19 +190,10 @@ event.on("BeforeRouteChange", data => {
     ko.cleanNode(data.titleEl);
     
     data.topRightEl.innerHTML = "";
-
-    let token = window.localStorage.getItem("token");
-    userIsAuthenticated = token === null ? false : true;
-    $.ajaxSetup({ 
-        headers:
-        { 
-            'Authorization': token === null ? "" : "Bearer " + token 
-        }
-    });    
-    event.broadcast("UserChanged");
-
     data.titleEl.innerHTML = "";
     data.contentEl.innerHTML = `<div class="in-progress"></div>`;
+
+    _updateUserAuthorization();
 
     if( window.innerWidth < 768 ) $("#wrapper").removeClass("toggled");
 
@@ -198,7 +204,7 @@ event.on("BeforeRouteChange", data => {
  */
 event.on("LeaveRoute", data => {
 
-    console.log("[MainController] LeaveRoute event handler.");
+    console.log("[MainController] LeaveRoute event handler.", data);
 
 });
 

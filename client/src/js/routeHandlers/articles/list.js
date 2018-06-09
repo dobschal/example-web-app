@@ -63,17 +63,18 @@ function onBefore( done, params )
         let cachedArticlesAsString = window.localStorage.getItem("articles");
         let articles = JSON.parse( cachedArticlesAsString );        
         viewModel.articles( Array.isArray( articles ) ? articles.map( prepareArticle ) : [] );
-        console.log(`[articles.js] Got ${articles.length} cached articles.`);
+        console.log(`[articles.js] Got ${articles.length} cached articles.`);
     } catch(e) {
         console.log("[articles.js] No cached articles found.", e);
     }
 
     websocket.connect()
     .then( connection => {
-        socketConnection = connection;        
+        socketConnection = connection;
+        done();
     })
-    .catch(console.error)
-    .finally(() => {
+    .catch( err => {
+        console.error("[ArticleList] Error on setting up socket connection.", err);
         done();
     });
 }

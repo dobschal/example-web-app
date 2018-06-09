@@ -51,6 +51,8 @@
 * Swiper --> HammerJS to toggle Sidebar
 * !Google Maps
 * !Active Menu Item
+* Labels --> https://stackoverflow.com/questions/18432376/what-does-for-attribute-do-in-html-label-tag
+* Linting - HTML, JS
 
 ### Server
 

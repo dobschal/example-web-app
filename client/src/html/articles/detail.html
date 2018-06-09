@@ -3,10 +3,10 @@
 <!-- /ko -->
 
 <!-- ko if: !isLoading() && !error()--> 
-<div class="animation-fade-in article">
+<div class="animate-fade-in article">
     <!-- ko if: images().length > 0 -->
         <a data-bind="attr: { href: images()[0].file, 'data-title': title }" data-lightbox="article-image" class="image mb-2">
-            <img data-bind="image: { src: images()[0].file + '?height=200&width=' + screenWidth() }"></img>
+            <img data-bind="image: { src: images()[0].file + '?height=200&#38;width=' + screenWidth() }"></img>
         </a>
     <!-- /ko -->
     <h2 data-bind="text: title"></h2>
@@ -16,7 +16,7 @@
 <!-- /ko-->
 
 <!-- ko if: !isLoading() && error()--> 
-<div class="animation-fade-in alert alert-danger">
+<div class="animate-fade-in alert alert-danger">
     <span data-bind="text: error"></span>
 </div>
 <!-- /ko-->
@@ -44,7 +44,7 @@
     <!-- /ko -->
 
     <!-- ko if: !isLoadingComments() && commentsError()--> 
-    <div class="animation-fade-in alert alert-danger">
+    <div class="animate-fade-in alert alert-danger">
         <span data-bind="text: commentsError"></span>
     </div>
     <!-- /ko -->
@@ -54,8 +54,8 @@
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Write a comment" aria-label="Write a comment" aria-describedby="basic-addon2" data-bind="value: newComment">
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button">
-                    <i class="fa fa-send"></i>
+                <button class="btn btn-outline-secondary" type="submit">
+                    <span class="fa fa-send"></span>
                 </button>
             </div>
         </div>

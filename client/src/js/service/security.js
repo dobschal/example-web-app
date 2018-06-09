@@ -1,6 +1,6 @@
 /**
  *  Returns the string of the userRole or an empty string.
- *  @return {string}
+ *  @returns {string} userRole
  */
 function getUserRole()
 {
@@ -11,8 +11,8 @@ function getUserRole()
 
 /**
  *  Returns an object with the content of the jsonwebtoken payload.
- *  @param {string} token 
- *  @return {object}
+ *  @param {string} token - authentication token for http header
+ *  @return {object} tokenPayload
  */
 function getJWTokenPayload( token )
 {

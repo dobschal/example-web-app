@@ -1,14 +1,14 @@
 
 const path = "*";
 
-function onActive( params, query )
+function onActive()
 {
     console.log("[start.js] View ready");
     this.titleEl.innerHTML = "Start";
     this.contentEl.innerHTML = "Welcome to my Page!";
 }
 
-function onBefore( done, params )
+function onBefore( done )
 {
     console.log("[start.js] Enter view");
     done();

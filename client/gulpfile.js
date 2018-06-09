@@ -17,9 +17,11 @@ const gulp    = require('gulp'),
     browserify = require('gulp-browserify'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify-es').default,
-    replace = require('gulp-replace');
+    replace = require('gulp-replace'),
+    eslint = require('gulp-eslint'),
+    htmlLint = require('gulp-html-lint');
 
-//  replace
+//  replacment of placeholders
 gulp.task('use-compressed-app', ["copy-files"], function(){
     gulp.src([buildPath + '/index.html'])
     .pipe(replace('#APP_SOURCE#', './js/app.min.js'))
@@ -45,6 +47,31 @@ gulp.task('connect', function() {
 });
 
 // BUILD TASKS
+
+gulp.task('lint-templates', function() {
+    return gulp.src('src/html/**/*.html')
+        .pipe(htmlLint({
+            rules: {
+                "attr-new-line": false,
+                "id-class-style": "dash",
+                "attr-name-style": "dash",
+                "line-end-style": false,
+                "img-req-src": false,
+                "img-req-alt": false,
+                "label-req-for": false // may be useful!
+            }
+        }))
+        .pipe(htmlLint.format())
+        .pipe(htmlLint.failOnError());
+});
+ 
+gulp.task('lint-scripts', ['lint-templates'], () => {
+    return gulp.src([ './src/js/**/*.js' ])
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
+});
+
 gulp.task('compile-sass', function () {
     return gulp.src( sassFiles + sassEntry )
       .pipe(sass().on('error', sass.logError))
@@ -69,7 +96,10 @@ gulp.task("copy-images", function() {
       .pipe(gulp.dest(buildPath + "/images"));
 });
  
-gulp.task('compile-scripts', function() {
+gulp.task('compile-scripts', [
+    "lint-scripts",
+    "lint-templates" 
+], function() {
     return gulp.src(jsFiles + jsEntry)
         .pipe(rename('app.js'))
         .pipe(browserify({ debug: true, list: true }))
@@ -83,7 +113,7 @@ gulp.task('compress-scripts', ['compile-scripts'], function () {
         .pipe(gulp.dest(buildPath + "/js"));
 });
 
-gulp.task('watch', ['connect'], function () {
+gulp.task('watch', function () {
     gulp.watch(sassFiles + '**/*.scss', [
         'compile-sass', 
         'copy-files', 
@@ -112,6 +142,8 @@ gulp.task('build-dev', [
     'copy-files', 
     'copy-fonts', 
     'copy-images',
+    "lint-templates",
+    "lint-scripts",
     'compile-scripts',
     "use-uncompressed-app",
     'update-service-worker-version'
@@ -122,6 +154,8 @@ gulp.task('build-prod', [
     'copy-files', 
     'copy-fonts', 
     'copy-images',
+    "lint-templates",
+    "lint-scripts",
     'compile-scripts',    
     'compress-scripts',
     "use-compressed-app",
@@ -129,12 +163,14 @@ gulp.task('build-prod', [
 ]);
 
 gulp.task('dev', [
-    "build-dev",
-    'connect',
+    "build-dev",    
     "watch"
 ]);
 
 gulp.task('prod', [
-    "build-prod",
-    'connect'
+    "build-prod"
+]);
+
+gulp.task('server', [
+    "connect"
 ]);

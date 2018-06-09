@@ -1,0 +1,17 @@
+{
+    "rules":{
+        "camelcase": 1,
+        "comma-dangle": 2,
+        "quotes": 0,
+        "no-path-concat": "off",
+        "no-sync": "off",
+        "no-mixed-spaces-and-tabs": "warn",
+        "prefer-rest-params": "warn",
+        "no-unused-vars":"warn",
+        "prefer-destructuring": "warn",
+        "array-bracket-spacing": "off"
+    },
+    "globals": {
+        "__dirname"
+    }
+}

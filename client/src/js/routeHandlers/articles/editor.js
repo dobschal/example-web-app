@@ -1,16 +1,19 @@
-const $         = require("jquery");
-const ko        = require("knockout");
-const fs        = require('fs');
-const config     = require("../../config");
-const swal      = require("sweetalert");
-const Quill     = require("quill");
-const translater= require("translato");
-const security  = require("../../service/security");
-const event     = require("../../service/event");
-const toastr    = require("toastr");
+const $          = require("jquery");
+const ko         = require("knockout");
+const fs         = require('fs');
+const config      = require("../../config");
+const swal       = require("sweetalert");
+const Quill      = require("quill");
+const translater = require("translato");
+const security   = require("../../service/security");
+const event      = require("../../service/event");
+const toastr     = require("toastr");
 const ImageUploadArea = require("../../components/ImageUploadArea");
 
-let paths       = [ "articles/editor", "articles/editor/:articleId" ];
+let paths       = [ 
+    "articles/editor", 
+    "articles/editor/:articleId" 
+];
 let template    = fs.readFileSync(__dirname + "/../../../html/articles/editor.html", 'utf8');
 let router      = null;
 let loadedImages = [];
@@ -108,7 +111,8 @@ function save()
 }
 
 /**
- *  @param {FormData} formData 
+ *  @param {FormData} formData - XHR Form Data
+ *  @returns {void}
  */
 function _sendRequest( formData )
 {
@@ -138,7 +142,7 @@ function _sendRequest( formData )
             viewModel.isSendingRequest( false );
             router.navigate( "/articles/" + viewModel.articleId() );
         },
-        error: function(err){
+        error: err => {
             console.log("[ArticleEditor] Error on sending data: ", err);
             toastr.error("Artikel konnte nicht gespeichert werden.");
             viewModel.isSendingRequest( false );
