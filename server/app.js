@@ -26,7 +26,7 @@ mongoose.connect( process.env.dbPath || "mongodb://localhost/example-web-app" );
 var app = express();
     app.use(cors());
     app.use(logger('dev'));
-    // app.use("/uploads", express.static( __dirname + "/uploads" ));
+    app.use("/client", express.static( __dirname + "/../client/build" ));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
