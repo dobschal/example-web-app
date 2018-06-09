@@ -1,4 +1,4 @@
 module.exports = {
-    serverUrl: "http://localhost:3001",
+    serverUrl: "http://www.dobschal.eu:3001",
     defaultLanguage: "de"
 };
