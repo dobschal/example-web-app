@@ -55,6 +55,8 @@ app.use(function(err, req, res, next) {
   res.send( err );
 });
 
+// Jule ist toll
+
 //  Get all websocket listener scripts
 let socketListeners = [];
 fs.readdirSync( __dirname + "/socketListeners" ).forEach( filename => {
