@@ -41,7 +41,7 @@ gulp.task('update-service-worker-version', ["copy-files"], function(){
 // START SERVER
 gulp.task('connect', function() {
     connect.server({
-        port: 1234,
+        port: 3002,
         buildPath: "./build"
     });
 });

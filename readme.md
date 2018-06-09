@@ -8,7 +8,7 @@
 * nodejs
     - npm init
     - npm install
-* gulp 
+* gulp --> https://gulpjs.com
     - browserify
     - eslint
     - scss
