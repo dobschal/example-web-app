@@ -8,16 +8,7 @@ const event             = require("./service/event");
 /**
  *  All routeControllers. Order is important!
  */
-const routeHandlers = [
-    require("./routeHandlers/articles/list"),
-    require("./routeHandlers/articles/editor"),
-    require("./routeHandlers/articles/detail"),
-    require("./routeHandlers/products/index"),
-    require("./routeHandlers/auth/register"),
-    require("./routeHandlers/auth/login"),
-    require("./routeHandlers/auth/logout"),
-    require("./routeHandlers/start/index")
-];
+const routeHandlers = require('./routeHandlers/**/*.js', { mode: 'list' });
 
 var router = new Navigo(null, true);
 

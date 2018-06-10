@@ -53,6 +53,8 @@
 * !Active Menu Item
 * Labels --> https://stackoverflow.com/questions/18432376/what-does-for-attribute-do-in-html-label-tag
 * Linting - HTML, JS
+* Auto Require all files in folder
+* Copy and paste files
 
 ### Server
 
@@ -69,3 +71,4 @@
 * E-Mail Templates
 * !CRON Jobs
 * !Fav icon
+* Auto Deploy on Repository Change
