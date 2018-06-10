@@ -42,6 +42,8 @@ router.hooks({
 
 mainCtrl.call( bindings, null );
 
+let routes = [];
+
 routeHandlers.forEach( routeHandler => {    
 
     let { 
@@ -71,10 +73,32 @@ routeHandlers.forEach( routeHandler => {
         if( typeof onLeave === "function" ) hooks.leave = onLeave.bind( bindings );
         if( typeof onAfter === "function" ) hooks.after = onAfter.bind( bindings );
 
-        router.on( pathName, onActive.bind( bindings ), hooks );
-
+        routes.push( { pathName, onActive: onActive.bind( bindings ), hooks });
     });
-});  
+});
+
+/**
+ *  We need to sort the routes before they are passed to the router
+ *  because else problems appear.
+ *  i.e.:   "/articles/:id" and "/articles/editor" 
+ *          will cause problems if in wrong order
+ *  Parameterized paths schould come at last.
+ */
+routes.sort( (a, b) => {
+    if(a.pathName.length < b.pathName.length) return 1;
+    if(a.pathName.length > b.pathName.length) return -1;
+    return 0;
+});
+routes.sort( (a, b) => {
+    if(a.pathName.includes(":") && !b.pathName.includes(":")) return 1;
+    if(!a.pathName.includes(":") && b.pathName.includes(":")) return -1;
+    return 0;
+});
+console.log("[Router] Sorted routes: ", routes);
+
+routes.forEach( route => {
+    router.on( route.pathName, route.onActive, router.hooks );
+});
 
 router.notFound( () => {
     alert("Route not found...");
