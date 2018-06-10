@@ -9,9 +9,7 @@ const event             = require("./service/event");
  *  All routeControllers. Order is important!
  */
 const loadedScripts = require('./routeHandlers/**/*.js', { mode: 'list' });
-const routeHandlers = loadedScripts.map( item => {
-    return item.module;
-});
+const routeHandlers = loadedScripts.map( item => item.module );
 
 var router = new Navigo(null, true);
 
