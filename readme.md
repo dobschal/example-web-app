@@ -79,9 +79,7 @@ router.post('/articles', security.protect(["user"]), function(req, res, next) {
 })
 ```
 
-```notice
-We need to inform the user about storing data on their computer! We are not using cookies, but still we need to tell the user that we store data in the localStorage!
-```
+**Notice: We need to inform the user about storing data on their computer! We are not using cookies, but still we need to tell the user that we store data in the localStorage!**
 
 
 * Sockets
