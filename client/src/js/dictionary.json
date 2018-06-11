@@ -8,6 +8,10 @@
             "de": "Abbrechen",
             "en": "Cancel"
         },
+        "success": {
+            "de": "Erfolgreich",
+            "en": "Successfully"
+        },
         "error": {
             "de": "Fehler",
             "en": "Error"
@@ -61,6 +65,24 @@
         "isLoading": {
             "de": "Artikel wird geladen...",
             "en": "Loading article..."
+        }
+    },
+    "validation": {
+        "title": {
+            "de": "Validierung",
+            "en": "Validation"
+        },
+        "loading": {
+            "de": "Account wird validiert...",
+            "en": "Validating account..."
+        },
+        "error": {
+            "de": "Account konnte nicht validiert werden. Bitte wenden sie sich an den Support.",
+            "en": "Unable to validate account. Please ask the support team for help."
+        },
+        "success": {
+            "de": "Account wurde erfolgreich validiert.",
+            "en": "Successfully validated account."
         }
     },
     "comments": {

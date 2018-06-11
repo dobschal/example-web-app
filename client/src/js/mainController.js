@@ -191,7 +191,7 @@ event.on("BeforeRouteChange", data => {
     
     data.topRightEl.innerHTML = "";
     data.titleEl.innerHTML = "";
-    data.contentEl.innerHTML = `<div class="in-progress"></div>`;
+    data.contentEl.innerHTML = `<div class="in-progress"><span id="loading-message"></span></div>`;
 
     _updateUserAuthorization();
 

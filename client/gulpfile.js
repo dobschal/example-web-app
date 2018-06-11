@@ -29,7 +29,7 @@ gulp.task('use-prod-api', ["compress-scripts"], function(){
 });
 gulp.task('use-dev-api', ["compile-scripts"], function(){
     gulp.src([buildPath + '/js/app.js'])
-    .pipe(replace('#SERVER_URL#', 'http://localhost:3000'))
+    .pipe(replace('#SERVER_URL#', 'http://localhost:3001'))
     .pipe(gulp.dest( buildPath + "/js/" ));
 });
 gulp.task('use-compressed-app', ["copy-files"], function(){

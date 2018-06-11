@@ -74,11 +74,16 @@ module.exports = function( io ) {
                 if (dbError) return next( dbError );
                 const validationToken = security.getValidationToken( username, "user", String(savedUser._id) );
                 const { CLIENT_URL: clientURL } = process.env;
-                const validationURL = clientURL + "/validate/" + validationToken;
+                const validationURL = clientURL + "#validate/" + validationToken;
                 email.sendRegistrationEmail( username, emailOfUser, validationURL );
                 res.send({ username, email });
             }); 
         });        
+    });
+
+    router.get('/auth/validate/:token', function(req, res) {
+        const { token } = req.params;
+        res.send(token);
     });
 
     return router;

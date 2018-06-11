@@ -12,6 +12,9 @@ div.in-progress, ul.in-progress, li.in-progress, span.in-progress, p.in-progress
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
+    color: #3b3b3b;
+    padding: 40px 0px;
 
     &::before
     {

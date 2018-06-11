@@ -36,7 +36,7 @@ function onBefore( done, params )
 {
     router = this.router;
     event.broadcast("ChangeTitle", { title: "register.title", isTranslationKey: true });
-    console.log("[register.js] Enter view");
+    console.log("[Register] OnBefore Hook. Enter view", this);
     done();
 }
 
@@ -66,7 +66,6 @@ function register()
             viewModel.isSendingRequest( false );
         });
     });
-    return false;
 }
 
 function _addFormValidator()
@@ -92,7 +91,10 @@ function _addFormValidator()
             de: 'Der Benutzername ist leider schon vergeben'
         }
     });
-    formValidator = $('#registration-form').parsley();
+    formValidator = $('#registration-form').parsley().on('form:submit', function() {
+        return false; // Don't submit form
+    });
+    
 }
 
 module.exports = { path, onActive, onBefore, onLeave };

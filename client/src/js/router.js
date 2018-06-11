@@ -11,6 +11,8 @@ const event             = require("./service/event");
 const loadedScripts = require('./routeHandlers/**/*.js', { mode: 'list' });
 const routeHandlers = loadedScripts.map( item => item.module );
 
+console.log("[Router] RouteHandlers: ", routeHandlers);
+
 var router = new Navigo(null, true);
 
 /**
@@ -44,7 +46,7 @@ mainCtrl.call( bindings, null );
 
 let routes = [];
 
-routeHandlers.forEach( routeHandler => {    
+routeHandlers.forEach( routeHandler => { 
 
     let { 
         path,     // String
@@ -89,15 +91,15 @@ routes.sort( (a, b) => {
     if(a.pathName.length > b.pathName.length) return -1;
     return 0;
 });
-routes.sort( (a, b) => {
-    if(a.pathName.includes(":") && !b.pathName.includes(":")) return 1;
-    if(!a.pathName.includes(":") && b.pathName.includes(":")) return -1;
-    return 0;
-});
+// routes.sort( (a, b) => {
+//     if(a.pathName.includes(":") && !b.pathName.includes(":")) return 1;
+//     if(!a.pathName.includes(":") && b.pathName.includes(":")) return -1;
+//     return 0;
+// });
 console.log("[Router] Sorted routes: ", routes);
 
 routes.forEach( route => {
-    router.on( route.pathName, route.onActive, router.hooks );
+    router.on( route.pathName, route.onActive, route.hooks );
 });
 
 router.notFound( () => {
