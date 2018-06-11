@@ -5,3 +5,4 @@
 server/uploads/
 /client/build
 /server/.env
+/server/.env-prod

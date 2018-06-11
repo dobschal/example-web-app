@@ -72,3 +72,4 @@
 * !CRON Jobs
 * !Fav icon
 * Auto Deploy on Repository Change
+* Locale header to send e-mails in right language

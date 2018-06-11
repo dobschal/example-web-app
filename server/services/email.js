@@ -4,18 +4,18 @@ const path          = require("path");
 
 const transporter = nodemailer.createTransport({
     pool: true,
-    host: process.env.EmailHost,
-    port: process.env.EmailPort,
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
     secure: false, // use TLS
     auth: {
-        user: process.env.EmailUser,
-        pass: process.env.EmailPassword
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD
     }
 });
 
 const email = new Email({
     message: {
-        from: process.env.EmailSender
+        from: process.env.EMAIL_SENDER
     },
     send: true, // If set to false, this will display the email in the browser for debugging!!!
     transport: transporter,
@@ -33,21 +33,26 @@ const email = new Email({
     }
 });
 
-function sendRegistrationEmail( username, emailOfUser )
+/**
+ *  @param {string} username - username of the new registered user
+ *  @param {string} emailOfUser - receiver for the registration email
+ *  @param {string} validationLink - link for the user to validate the account
+ *  @returns {promise} sendingMail
+ */
+function sendRegistrationEmail( username, emailOfUser, validationLink )
 {
 
-    email
-        .send({
-            template: 'registration',
-            message: {
-                to: emailOfUser
-            },
-            locals: {
-                name: username
-            }
-        })
-        .then(console.log)
-        .catch(console.error);
+    // TODO: Add localization...
+
+    return email.send({
+        template: 'registration',
+        message: {
+            to: emailOfUser
+        },
+        locals: { username, validationLink }
+    })
+    .then( () => console.log("[Email] Sent e-mail for registration successully.") )
+    .catch( err => console.error("[Email] Unable to send registration email. ", err) );
 }
 
 module.exports = { sendRegistrationEmail };

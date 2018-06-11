@@ -12,11 +12,17 @@ module.exports = function( io ) {
         User.findOne({ username: username, password: hashedPassword }, (err, user) => {
             if (err || !user)
             {
-                err = new Error("Permission denied.");
-                err.status = 401;
-                return next( err );
+                let deniedError = new Error("Permission denied.");
+                deniedError.status = 401;
+                return next( deniedError );
             }
-            const token = security.getToken( user.username, user.userRole, user._id + "" );
+            if( !user.valid )
+            {
+                let notValidError = new Error("Account not valid.");
+                notValidError.status = 409;
+                return next( notValidError );
+            }
+            const token = security.getToken( user.username, user.userRole, String(user._id) );
             res.send({ success: true, token });
         });
     });
@@ -44,9 +50,6 @@ module.exports = function( io ) {
     router.post('/register', function(req, res, next) {
         const { username, email: emailOfUser, password } = req.body;
 
-        email.sendRegistrationEmail( username, emailOfUser );
-
-
         User.findOne({ username: username }, (err, userFromDB) => {
             if (err)
             {
@@ -58,7 +61,7 @@ module.exports = function( io ) {
                 let conflictError = new Error("User already exists.");
                 conflictError.status = 409;
                 return next( conflictError );
-            }
+            }            
             const hashedPassword = security.hashPassword( password );
             let user = new User({ 
                 username, 
@@ -67,8 +70,12 @@ module.exports = function( io ) {
                 userRole: "user",                 
                 registeredAt: new Date() 
             });
-            user.save((err, savedUser) => {
-                if (err) return next( err );
+            user.save((dbError, savedUser) => {
+                if (dbError) return next( dbError );
+                const validationToken = security.getValidationToken( username, "user", String(savedUser._id) );
+                const { CLIENT_URL: clientURL } = process.env;
+                const validationURL = clientURL + "/validate/" + validationToken;
+                email.sendRegistrationEmail( username, emailOfUser, validationURL );
                 res.send({ username, email });
             }); 
         });        

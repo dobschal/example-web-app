@@ -1,56 +1,76 @@
 const jwt = require("jsonwebtoken");
-const sha512 = require('js-sha512').sha512;
-const secret = "blablabla"; // TODO: move to environment variables
-const hashSalt = "yeahyeahyeah"; // TODO: move to environment variables
+const hash = require('js-sha512');
+const secret = process.env.SECRET;
 
 /**
- * @param {array} allowedUserRoles 
+ *  @param {array} allowedUserRoles - Array of strings with the user roles like "admin", "user", "moderator"
+ *  @returns {void} - Middleware for route, call next() when finished
  */
 function protect( allowedUserRoles )
 {
     return ( req, res, next ) => {
         try {
             let authHeader = req.headers["authorization"];
-            let splittedAuthHeader = authHeader.split(" ");
+            let splittedAuthHeader = authHeader.split(" "); // remove "bearer" from authorization header
             let token = splittedAuthHeader[ 1 ];
-            jwt.verify( token, secret, (err, data) => {
-                if( err || !allowedUserRoles.includes( data.userRole ))
+            return jwt.verify( token, secret, (err, data) => {
+                
+                let isTokenExpired = !data.expiration || Date.now() + process.env.TOKEN_EXPIRATION > data.expiration;
+
+                if( err || !allowedUserRoles.includes( data.userRole ) || isTokenExpired )
                 {
-                    err = new Error("Permission denied.");
-                    err.status = 403;
-                    return next( err );
+                    console.warn(`[Security] User token validation failed.
+                        \n    Right user role? ${allowedUserRoles.includes( data.userRole )}
+                        \n    Token expired? ${isTokenExpired}
+                        \n    Error? ${err.message}
+                    `);
+                    let permissionError = new Error("Permission denied.");
+                    permissionError.status = 403;
+                    return next( permissionError );
                 }
 
                 req.token = token;
                 req.tokenData = data;
-                next();
+                return next();
             });
         } catch(e) {
-            let err = new Error("Permission denied.");
-            err.status = 403;
-            next( err );
+            let permissionError = new Error("Permission denied.");
+            permissionError.status = 403;
+            return next( permissionError );
         }
     };
 }
 
 /**
- * 
- * @param {string} username 
- * @param {string} userRole 
- * @param {string} userId
+ *  @param {string} username - unique for user
+ *  @param {string} userRole - "admin", "user", "moderator"
+ *  @param {string} userId - db id
+ *  @returns {string} token
  */
-function getToken( username, userRole, userId )
+function getValidationToken( username, userRole, userId )
 {
-    // TODO: Add expiration to token payload
-    return jwt.sign( { userRole, username, userId }, secret);
+    return jwt.sign( { userRole, username, userId, action: "validation" }, secret);
 }
 
 /**
- * @param {string} plaintextPassword 
+ *  @param {string} username - unique for username
+ *  @param {string} userRole - "admin", "user", "moderator"
+ *  @param {string} userId - db id
+ *  @returns {string} token
+ */
+function getToken( username, userRole, userId )
+{
+    let expiration = Date.now() + process.env.TOKEN_EXPIRATION;
+    return jwt.sign( { userRole, username, userId, expiration }, secret);
+}
+
+/**
+ *  @param {string} plaintextPassword - Password that should be hashed
+ *  @returns {string} hashedPassword
  */
 function hashPassword( plaintextPassword )
 {
-    return sha512( plaintextPassword + hashSalt );
+    return hash.sha512( plaintextPassword + secret );
 }
 
-module.exports = { getToken, protect, hashPassword };
+module.exports = { getToken, protect, hashPassword, getValidationToken };
