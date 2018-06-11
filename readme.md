@@ -64,19 +64,23 @@
 * mongoose
 
 #### JWT
-Javascript Web Tokens are used keep information about the user on the users computer/browser.
-When the authenticates with username and password, the server creates a token with a signature.
+Javascript Web Tokens are used to keep information about the user on the users computer/browser.
+When the user authenticates with username and password, the server creates a token with a signature.
 Only the server can validate the token, cause it includes a hashed secret key. 
-Every request sent by the user then includes the token in the authorization header.
-If the token is not valid or not token is given, the server will respond with an 401 error code.
+Every request sent by the user then includes that token in the authorization header.
+If the token is not valid or no token is given, the server will respond with an 401 error code.
 
 ##### Server
-```
+```javascript
 // The service "security" contains a middleware method to secure a route.
 // If the user hasn't the right user role a error response will be send
 router.post('/articles', security.protect(["user"]), function(req, res, next) { 
     ...
 })
+```
+
+```notice
+We need to inform the user about storing data on their computer! We are not using cookies, but still we need to tell the user that we store data in the localStorage!
 ```
 
 
