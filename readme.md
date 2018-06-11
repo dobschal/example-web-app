@@ -49,6 +49,7 @@
 * !Datenschutz DSGVO
 * Form Validation - parsleyjs
 * Swiper --> HammerJS to toggle Sidebar
+* ! Swipe without disable text selection and right treshold
 * !Google Maps
 * !Active Menu Item
 * Labels --> https://stackoverflow.com/questions/18432376/what-does-for-attribute-do-in-html-label-tag

@@ -3,6 +3,8 @@ const router  = express.Router();
 const security = require("../services/security");
 const User = require("../models/User");
 const email = require("../services/email");
+const jwt = require("jsonwebtoken");
+const secret = process.env.SECRET;
 
 module.exports = function( io ) {
 
@@ -81,9 +83,26 @@ module.exports = function( io ) {
         });        
     });
 
-    router.get('/auth/validate/:token', function(req, res) {
-        const { token } = req.params;
-        res.send(token);
+    router.get('/auth/validate/:token', function(req, res, next) {
+        const { params: { token } } = req;
+        jwt.verify( token, secret, ( jwtError, jwtData ) => {
+            if( jwtError ) return next( jwtError );
+            let { action, userId } = jwtData;
+            if( action !== "validation" )
+            {
+                let notValidError = new Error("Token not valid.");
+                notValidError.status(400);
+                return next( notValidError );
+            }
+            User.findByIdAndUpdate( userId, { valid: true }, { new: true }, ( dbError, userFromDB ) => {                
+                if (dbError)
+                {
+                    dbError.status = 401;
+                    return next( dbError );
+                }
+                res.send( userFromDB );
+            });            
+        });
     });
 
     return router;
