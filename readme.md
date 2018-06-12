@@ -93,3 +93,4 @@ router.post('/articles', security.protect(["user"]), function(req, res, next) {
 * !Fav icon
 * Auto Deploy on Repository Change
 * Locale header to send e-mails in right language
+* Super Admin - Page
