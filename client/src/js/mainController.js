@@ -9,6 +9,7 @@ const dictionary    = require("./dictionary.json");
 const parsley       = require("parsleyjs");
 const Hammer        = require("hammerjs");
 const toastr        = require("toastr");
+const util          = require("./service/util");
 
 //  Locale files for moment and parsley js
 require("../../node_modules/moment/locale/de");
@@ -75,18 +76,20 @@ function _registerServiceWorker()
     {
         navigator.serviceWorker
         .register( "./service-worker.js", { scope: './' })
-        .then(function() {
-            console.log("[main.js] Service Worker Registered");
+        .then(function( register ) {
+            console.log("[MainController] Service Worker Registered");
+            event.broadcast("RegisteredServiceWorker", register);
         })
         .catch(function(err) {
-            console.error("[main.js] Service Worker Failed to Register", err);
-        });        
+            console.error("[MainController] Service Worker Failed to Register", err);
+        });
     }
     else
     {
         console.warn("[MainController] Service worker aren't available.");
     }
 }
+  
 
 /**
  *  Translate the whole page in a different language. Sets the language also in
@@ -139,6 +142,36 @@ function _updateUserAuthorization()
     });    
     event.broadcast("UserChanged", userIsAuthenticated);
 }
+
+/**
+ *  @param {object} worker - Service worker instance got from service worker registration
+ *  @returns {void}
+ */
+function _registerPushNotifications( worker )
+{
+    worker.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: util.urlBase64ToUint8Array( config.pushNotificationPublicKey )
+    })
+    .then( subscription => {        
+        console.log("[MainController] Push registered.", subscription);
+        fetch(config.serverUrl + "/register-push", {
+            body: JSON.stringify( subscription ),
+            method: "post",
+            headers: { 
+                "content-type": "application/json"
+            }
+        }).then(console.log).catch(console.error);
+    })
+    .catch( err => console.error( "[MainController] Unable to register push notifications.", err ) );
+}
+
+/**
+ *  After the service worker is registered we can use it here.
+ */
+event.on("RegisteredServiceWorker", worker => {
+    _registerPushNotifications( worker );
+});
 
 /**
  *  On User Change update the navigation in the sidebar.

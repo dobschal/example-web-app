@@ -10,6 +10,7 @@ module.exports = {
     },
     "extends": "eslint:recommended",
     "parserOptions": {
+        "ecmaVersion": 2017,
         "ecmaFeatures": {
             "jsx": true
         },
@@ -147,10 +148,11 @@ module.exports = {
         "no-lonely-if": "error",
         "no-loop-func": "error",
         "no-magic-numbers": "off",
-        "no-mixed-operators": "error",
+        "no-mixed-operators": "off",
         "no-mixed-requires": "error",
         "no-multi-assign": "error",
         "no-multi-spaces": "off",
+        "no-useless-escape": "off",
         "no-multi-str": "error",
         "no-multiple-empty-lines": "error",
         "no-native-reassign": "error",
