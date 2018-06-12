@@ -13,7 +13,12 @@ var cacheFiles = [
 	'./fonts/fontawesome-webfont.ttf?v=4.7.0',
 	'./fonts/fontawesome-webfont.woff?v=4.7.0',
 	'./fonts/fontawesome-webfont.woff2?v=4.7.0',
-	'./fonts/FontAwesome.otf'
+	'./fonts/FontAwesome.otf',
+	'./images/brand.svg',
+	'./images/close.png',
+	'./images/loading.gif',
+	'./images/next.png',
+	'./images/prev.png'	
 ];
 
 self.addEventListener('install', function(e) {
