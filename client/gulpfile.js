@@ -24,7 +24,7 @@ const gulp    = require('gulp'),
 //  replacment of placeholders
 gulp.task('use-prod-api', ["compress-scripts"], function(){
     gulp.src([buildPath + '/js/app.min.js'])
-    .pipe(replace('#SERVER_URL#', 'http://www.dobschal.eu:3001'))
+    .pipe(replace('#SERVER_URL#', 'https://www.dobschal.eu'))
     .pipe(gulp.dest( buildPath + "/js/" ));
 });
 gulp.task('use-dev-api', ["compile-scripts"], function(){

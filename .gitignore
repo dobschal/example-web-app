@@ -6,3 +6,5 @@ server/uploads/
 /client/build
 /server/.env
 /server/.env-prod
+/server/ssl_private_key.key
+/server/ssl_certificate.cer

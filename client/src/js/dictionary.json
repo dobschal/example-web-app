@@ -31,6 +31,10 @@
         "email": {
             "de": "E-Mail",
             "en": "E-Mail"
+        },
+        "autoLogout": {
+            "de": "Sie wurden automatisch ausgeloggt.",
+            "en": "You got logged out automatically."
         }
     },
     "errors": {

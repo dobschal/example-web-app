@@ -10,6 +10,17 @@ function getUserRole()
 }
 
 /**
+ *  Returns true if the token isn't valid anymore
+ *  @returns {Boolean} tokenExpired
+ */
+function isTokenExpired()
+{
+    let token = window.localStorage.getItem("token");
+    let tokenData = getJWTokenPayload( token );
+    return tokenData && tokenData.expiration && tokenData.expiration < Date.now();
+}
+
+/**
  *  Returns an object with the content of the jsonwebtoken payload.
  *  @param {string} token - authentication token for http header
  *  @return {object} tokenPayload
@@ -28,4 +39,4 @@ function getJWTokenPayload( token )
     }        
 }
 
-module.exports = { getJWTokenPayload, getUserRole };
+module.exports = { getJWTokenPayload, getUserRole, isTokenExpired };

@@ -8,6 +8,7 @@ const translato     = require("translato");
 const dictionary    = require("./dictionary.json");
 const parsley       = require("parsleyjs");
 const Hammer        = require("hammerjs");
+const toastr        = require("toastr");
 
 //  Locale files for moment and parsley js
 require("../../node_modules/moment/locale/de");
@@ -119,12 +120,21 @@ function _setLanguage( languageKey )
  */
 function _updateUserAuthorization()
 {
-    let token = window.localStorage.getItem("token");
+    let token = null;
+    if( security.isTokenExpired() )
+    {
+        toastr.info( translato.translateKeys("general.autoLogout") );
+        window.localStorage.removeItem("token");
+    }
+    else
+    {
+        token = window.localStorage.getItem("token");
+    }
     userIsAuthenticated = token === null ? false : true;
     $.ajaxSetup({ 
         headers:
         { 
-            'Authorization': token === null ? "" : "Bearer " + token 
+            'Authorization': userIsAuthenticated ? "Bearer " + token : ""
         }
     });    
     event.broadcast("UserChanged", userIsAuthenticated);
