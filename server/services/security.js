@@ -22,7 +22,7 @@ function protect( allowedUserRoles )
                     console.warn(`[Security] User token validation failed.
                         \n    Right user role? ${allowedUserRoles.includes( data.userRole )}
                         \n    Token expired? ${isTokenExpired}
-                        \n    Error? ${err.message}
+                        \n    Error? ${err ? err.message : "no"}
                     `);
                     let permissionError = new Error("Permission denied.");
                     permissionError.status = 403;
