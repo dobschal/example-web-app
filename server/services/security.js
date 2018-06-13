@@ -15,7 +15,7 @@ function protect( allowedUserRoles )
             let token = splittedAuthHeader[ 1 ];
             return jwt.verify( token, secret, (err, data) => {
                 
-                let isTokenExpired = !data.expiration || Date.now() + process.env.TOKEN_EXPIRATION > data.expiration;
+                let isTokenExpired = !data.expiration || Date.now() > data.expiration;
 
                 if( err || !allowedUserRoles.includes( data.userRole ) || isTokenExpired )
                 {
