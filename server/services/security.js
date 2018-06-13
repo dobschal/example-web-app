@@ -34,6 +34,7 @@ function protect( allowedUserRoles )
                 return next();
             });
         } catch(e) {
+            console.error("[Security] Error on parsing token: ", e);
             let permissionError = new Error("Permission denied.");
             permissionError.status = 403;
             return next( permissionError );
