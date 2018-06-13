@@ -11,7 +11,7 @@ module.exports = function ( io ) {
 
     router.get('/articles/:articleId/comments', function(req, res, next) {
         const { articleId } = req.params;
-        ArticleComment.find({ "articleId": articleId },( err, articleComments ) => {
+        ArticleComment.find({ "articleId": articleId }, ( err, articleComments ) => {
             if (err) return next( err );
             res.send({ success: true, info: "Got article comments from database.", articleComments });
         });
@@ -67,7 +67,7 @@ module.exports = function ( io ) {
     });
 
     router.get('/articles', function(req, res, next) {
-        const protocoll = req.connection.encrypted ? "https" : "http";
+        const protocoll = "https"; // req.connection.encrypted ? "https" : "http";
         Article.find(( err, articlesFromDB ) => {
             if (err) return next( err );            
             let articles = articlesFromDB.map( article => {
@@ -106,7 +106,7 @@ module.exports = function ( io ) {
 
     router.get('/articles/:id', function(req, res, next) {
         const articleId = req.params.id;
-        const protocoll = req.connection.encrypted ? "https" : "http";
+        const protocoll = "https"; // req.connection.encrypted ? "https" : "http";
         Article.findById( articleId, ( err, article ) => {
             if (err) return next( err );
             if( !article )
