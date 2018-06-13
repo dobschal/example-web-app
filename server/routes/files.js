@@ -15,31 +15,35 @@ module.exports = function ()
 {
     router.get('/uploads/:filename', function( req, res, next ) {
         let { filename } = req.params;
-        console.log("[FileService] Filename: ", filename);
         let { width, height } = req.query;
-        if( width && height )
-        {            
-            sharp( path.resolve( "../uploads/" + filename ) ).resize( parseInt(width, 10), parseInt(height, 10) ).toBuffer().then( data => {
-                res.setHeader("Content-Type", "image/png");
-                res.send( data );
-            } )
-            .catch( err => {
-                next( err );
-            });                
-        }
-        else if( width && !height )
-        {
-            sharp( path.resolve( "../uploads/" + filename ) ).resize( parseInt(width, 10) ).toBuffer().then( data => {
-                res.setHeader("Content-Type", "image/png");
-                res.send( data );
-            } )
-            .catch( err => {
-                next( err );
-            });
-        }
-        else
-        {
-            res.sendFile( path.resolve( "uploads/" + filename ) );
+        try {
+            if( width && height )
+            {            
+                sharp( path.resolve( "uploads/" + filename ) ).resize( parseInt(width, 10), parseInt(height, 10) ).toBuffer().then( data => {
+                    res.setHeader("Content-Type", "image/png");
+                    res.send( data );
+                } )
+                .catch( err => {
+                    next( err );
+                });                
+            }
+            else if( width && !height )
+            {
+                sharp( path.resolve( "uploads/" + filename ) ).resize( parseInt(width, 10) ).toBuffer().then( data => {
+                    res.setHeader("Content-Type", "image/png");
+                    res.send( data );
+                } )
+                .catch( err => {
+                    next( err );
+                });
+            }
+            else
+            {
+                res.sendFile( path.resolve( "uploads/" + filename ) );
+            }
+        } catch(e) {
+            console.error("[FileService] Error getting file: ", e);
+            return next(e);
         }
     });
 
