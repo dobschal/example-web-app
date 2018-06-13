@@ -45,6 +45,10 @@
         "internal": {
             "de": "Es ist ein interner Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
             "en": "An internal error occured, please try again later."
+        },
+        "notEnoughRights": {
+            "de": "Sie haben nicht genügend Rechte für diese Aktion.",
+            "en": "You do not have enough rights for this action."
         }
     },
     "register": {

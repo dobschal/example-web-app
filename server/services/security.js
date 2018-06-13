@@ -60,7 +60,7 @@ function getValidationToken( username, userRole, userId )
  */
 function getToken( username, userRole, userId )
 {
-    let expiration = Date.now()/* + process.env.TOKEN_EXPIRATION*/;
+    let expiration = Date.now() + process.env.TOKEN_EXPIRATION;
     return jwt.sign( { userRole, username, userId, expiration }, secret);
 }
 

@@ -48,20 +48,18 @@ function main()
         }
     }); 
 
+    // Enable text selection
+    delete Hammer.defaults.cssProps.userSelect;
     var hammertime = new Hammer( $("#wrapper")[0] );
-    hammertime.on('pan', function(e) {
-        console.log("[MainController] User is swiping.");
-        switch( e.direction )
-        {
-            case 2: // To Left
-                $("#wrapper").removeClass("toggled");
-            break;
-            case 4: // To Right
-                $("#wrapper").addClass("toggled");
-            break;
-            default: console.log("Ignore unwanted swipe gesture.");
-        }
+    hammertime.get('pan').set({ threshold: 100 });
+    hammertime.on('panleft', function(e) {
+        console.log("[MainController] User is swiping.", e);
+        $("#wrapper").removeClass("toggled");        
     });
+    hammertime.on('panright', function(e) {
+        console.log("[MainController] User is swiping.", e);
+        $("#wrapper").addClass("toggled");
+    });    
 
     ko.applyBindings( navigationModel, this.sidebarEl );
 }
