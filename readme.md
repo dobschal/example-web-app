@@ -60,9 +60,48 @@
 ### Server
 
 * express app
-* autoloader
-* CRUD routes
-* mongoose
+#### Autoloader
+
+In the app.js, our entry script, we do not want to add every single script we created manually. Instead we write an autoloader for all routes and socketListeners.
+```javascript
+fs.readdirSync( __dirname + "/routes" )
+    .forEach( filename => {
+        app.use("/", require( __dirname + "/routes/" + filename 
+    })
+);
+```
+
+#### CRUD routes
+
+*CRUD* > Create, Retrieve, Update, Delete
+
+Normally we need this four actions for every entity availabel over our API. Use different HTTP methods for each: GET, POST, PUT, DELETE. 
+
+#### mongoose
+Moongoose is a nice database manager to setup your models and to communicate with the mongoDB.
+We can easily define models and create instance which we can save in our mongoDB. Also querying the database is much easier with mongoose.
+
+```javascript
+const mongoose = require("mongoose");
+
+var articleSchema = mongoose.Schema({
+    content: { type: String, required: true }
+});
+
+var Article = mongoose.model('Article', articleSchema)
+
+var article = new Article({ title: "test", content: "This is my content!" });
+
+article.save( err => {
+    if(err) throw err;
+    console.log("Saved article in database...");
+})
+
+Article.findOne({ title: "test" }, (err, articleFromDB) => {
+    if(err) throw err;
+    console.log("Here is my article from the database: ", articleFromDB);
+});
+```
 
 #### JWT
 Javascript Web Tokens are used to keep information about the user on the users computer/browser.
@@ -83,15 +122,61 @@ router.post('/articles', security.protect(["user"]), function(req, res, next) {
 **Notice: We need to inform the user about storing data on their computer! We are not using cookies, but still we need to tell the user that we store data in the localStorage!**
 
 
-* Sockets
-* DBMigration
-* Image Upload
-* Environment Variables
-* !Push Notifications
+#### Sockets
+
+The server side of our websocket interface is setup in the app.js file. 
+If you want to listen for an event sent from the client, just add an script to folder "socketListeners".
+The script should export an name (string name of the event the client fires) and a listener (function which is excuted when event was triggered).
+The listener got the current connection to the client and the socket io instance as binded properties.
+
+```javascript
+const name = "SomeEventNamehere";
+
+function listener( data )
+{
+    this.connection.emit( "SpecialAnswer", "Send something to the client, who triggered the event.");
+    
+    this.io.emit("HelloWorld", "Send something to all connected users!");
+}
+
+module.exports = { name, listener };
+```
+
+#### DBMigration
+You can add scripts to the folder 'dbMigration'. Each is executed one time. So if you make changes in your model, add a update script for the database. It will be started automatically, when node starts!
+
+#### Image Upload
+We are using Multer to apply a middleware to a route that can handle file uploads.
+See "routes/articles.js" for more details.
+In the folder "uploadHandlers" we can define specific uploadHandlers. The uploadHandlers can limit and filter the uploaded files and decide where to store the files. I.e. we have an articleImage uploadHandler.
+
+https://github.com/expressjs/multer
+
+#### Environment Variables
+In our case environment variables are used to keep secret parameters secret. 
+Instead of putting them into any config file and pushing them into the git repository, we use the node cmd line syntax:
+```bash
+--DB_PATH=mongodb://blabla.whatever node app.js
+```
+In our server application we can access this variables as follows:
+```javascript
+let dbPath = process.env.DB_PATH;
+```
+Normally we have multiple environment variables like e-mail, database, push notifiction credentials or whatever. That's why it makes sense to put them in a secret file. The NPM package *'dotenv'* makes it possible. Just store the parameters in a file call *'.env'* in the root of the application and add the following line to your app:
+```javascript
+require('dotenv').config();
+```
+**Notice: Add the .env file to your git ignore!!! And upload it manually to your server, when needed.**
+
+
+#### Push Notifications
+
+We are using the NPM package *'web-push'* for that.
+
 * E-Mail Templates
 * !CRON Jobs
 * !Fav icon
 * Auto Deploy on Repository Change
-* Locale header to send e-mails in right language
-* Super Admin - Page
+* !Locale header to send e-mails in right language
+* !Super Admin - Page
 * nginx server setup with ssl

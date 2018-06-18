@@ -75,7 +75,7 @@ function _addFormValidator()
         {
             return new Promise( (resolve, reject) => {
                 console.log("[Registration] Validate username.");
-                let xhr = $.get( config.serverUrl + "/user/" + username );
+                let xhr = $.get( config.serverUrl + "/users/" + username );
                 xhr.then( () => {
                     reject( new Error("User with username already exists.") );
                 }, error => {

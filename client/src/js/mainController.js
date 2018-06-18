@@ -47,19 +47,24 @@ function main()
             $("#wrapper").addClass("toggled");
         }
     }); 
+    
+    if( util.isMobileDevice() )
+    {
+        
+        // Uncomment this to enable text selection and swipe to toggle menu at same time.
+        // delete Hammer.defaults.cssProps.userSelect;
 
-    // Enable text selection
-    delete Hammer.defaults.cssProps.userSelect;
-    var hammertime = new Hammer( $("#wrapper")[0] );
-    hammertime.get('pan').set({ threshold: 100 });
-    hammertime.on('panleft', function(e) {
-        console.log("[MainController] User is swiping.", e);
-        $("#wrapper").removeClass("toggled");        
-    });
-    hammertime.on('panright', function(e) {
-        console.log("[MainController] User is swiping.", e);
-        $("#wrapper").addClass("toggled");
-    });    
+        var hammertime = new Hammer( $("#wrapper")[0] );
+        hammertime.get('pan').set({ threshold: 100 });
+        hammertime.on('panleft', function(e) {
+            console.log("[MainController] User is swiping.", e);
+            $("#wrapper").removeClass("toggled");        
+        });
+        hammertime.on('panright', function(e) {
+            console.log("[MainController] User is swiping.", e);
+            $("#wrapper").addClass("toggled");
+        });    
+    }
 
     ko.applyBindings( navigationModel, this.sidebarEl );
 }

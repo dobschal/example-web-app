@@ -2,6 +2,7 @@ const express           = require('express');
 const Article           = require("../models/Article");
 const ArticleComment    = require("../models/ArticleComment");
 const security          = require("../services/security");
+const { userRoles }     = security;
 const uploader          = require("../uploadHandlers/articleImage");
 const fs                = require("fs");
 
@@ -17,7 +18,7 @@ module.exports = function ( io ) {
         });
     });
 
-    router.post('/articles/:articleId/comment', security.protect(["user"]), function(req, res, next) {
+    router.post('/articles/:articleId/comment', security.protect([  userRoles.USER ]), function(req, res, next) {
         const { content } = req.body;
         const { articleId } = req.params;
         const { username } = req.tokenData;
@@ -29,7 +30,7 @@ module.exports = function ( io ) {
         });
     });
 
-    router.post('/articles', security.protect(["user"]), uploader.array("images", 100), function(req, res, next) {
+    router.post('/articles', security.protect([ userRoles.USER ]), uploader.array("images", 100), function(req, res, next) {
         console.log("[articles.js] Got new uploaded file.", req.files, req.body);
         try {
             let { title, content, imageMeta } = req.body;
@@ -131,7 +132,7 @@ module.exports = function ( io ) {
         });
     });
 
-    router.put("/articles/:id", security.protect(["user"]), uploader.array("images", 100), function( req, res, next ) {
+    router.put("/articles/:id", security.protect([ userRoles.USER ]), uploader.array("images", 100), function( req, res, next ) {
         const articleId = req.params.id;
         let { title, content, imageMeta } = req.body;
         imageMeta = Array.isArray( imageMeta ) ? imageMeta : [imageMeta];

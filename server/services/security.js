@@ -2,6 +2,12 @@ const jwt = require("jsonwebtoken");
 const hash = require('js-sha512');
 const secret = process.env.SECRET;
 
+const userRoles = Object.freeze({
+    "ADMIN": "admin",
+    "USER": "user",
+    "MODERATOR": "moderator"
+});
+
 /**
  *  @param {array} allowedUserRoles - Array of strings with the user roles like "admin", "user", "moderator"
  *  @returns {void} - Middleware for route, call next() when finished
@@ -74,4 +80,4 @@ function hashPassword( plaintextPassword )
     return hash.sha512( plaintextPassword + secret );
 }
 
-module.exports = { getToken, protect, hashPassword, getValidationToken };
+module.exports = { getToken, protect, hashPassword, getValidationToken, userRoles };

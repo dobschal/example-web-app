@@ -1,6 +1,7 @@
 const express = require('express');
 const router  = express.Router();
 const security = require("../services/security");
+const userRoles = security.userRoles;
 const User = require("../models/User");
 const email = require("../services/email");
 const jwt = require("jsonwebtoken");
@@ -29,26 +30,6 @@ module.exports = function( io ) {
         });
     });
 
-    router.get("/user/:username", function( req, res, next) {
-        const { username } = req.params;
-
-        User.findOne({ username: username }, (err, userFromDB) => {
-            if (err)
-            {
-                err.status = 500;
-                return next( err );
-            }
-            if (!userFromDB)
-            {
-                let conflictError = new Error("User does not exist.");
-                conflictError.status = 404;
-                return next( conflictError );
-            }
-            let { username: usernameFromDB, userRole } = userFromDB;
-            res.status(200).send({ usernameFromDB, userRole });
-        });
-    });
-
     router.post('/register', function(req, res, next) {
         const { username, email: emailOfUser, password } = req.body;
 
@@ -69,12 +50,12 @@ module.exports = function( io ) {
                 username, 
                 email: emailOfUser, 
                 password: hashedPassword, 
-                userRole: "user",                 
+                userRole: userRoles.USER,                 
                 registeredAt: new Date() 
             });
             user.save((dbError, savedUser) => {
                 if (dbError) return next( dbError );
-                const validationToken = security.getValidationToken( username, "user", String(savedUser._id) );
+                const validationToken = security.getValidationToken( username, userRoles.USER, String(savedUser._id) );
                 const { CLIENT_URL: clientURL } = process.env;
                 const validationURL = clientURL + "#validate/" + validationToken;
                 email.sendRegistrationEmail( username, emailOfUser, validationURL );

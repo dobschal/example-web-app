@@ -98,5 +98,11 @@
             "de": "Kommentare werden geladen...",
             "en": "Loading comments..."
         }
+    },
+    "map": {
+        "title": {
+            "de": "Karte",
+            "en": "Map"
+        }
     }
 }
