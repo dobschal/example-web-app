@@ -158,7 +158,7 @@ function _registerPushNotifications( worker )
     })
     .then( subscription => {        
         console.log("[MainController] Push registered.", subscription);
-        fetch(config.serverUrl + "/push/register", {
+        fetch( config.serverUrl + "/push/register", {
             body: JSON.stringify( subscription ),
             method: "post",
             headers: { 
