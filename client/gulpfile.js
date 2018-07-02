@@ -1,6 +1,6 @@
 
 //  CONFIG
-const filesToCopy = ["./src/html/index.html", "./src/js/service-worker.js" ];
+const filesToCopy = ["./src/html/index.html", "./src/js/service-worker.js", "./src/js/manifest.json"];
 const fontsToCopy = ["./node_modules/font-awesome/fonts/**"];
 const imagesToCopy = ["./node_modules/lightbox2/dist/images/**", "./assets/**"];
 const sassFiles = './src/scss/';

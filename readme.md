@@ -48,8 +48,15 @@
 * fadeIn image after load --> image knockout binding
 * !Datenschutz DSGVO
 * Form Validation - parsleyjs
-* Swiper --> HammerJS to toggle Sidebar
-* ! Swipe without disable text selection and right treshold
+
+#### Swipe Gestures
+We want to detect swipe gestures of the user to perform some actions. In our case, we toggle the sidebar if the user swipes to left or right.
+To detect swipe gestures we use HammerJS in the MainController.
+https://hammerjs.github.io
+
+We only want swipe gestures on mobile devices. Else on desktop computer the gesture would overwrite the text selection functionality, but we want both. So in the mainController we apply HammerJS only if the current device is mobile. See the following link for details, how to detect a mobile device:
+https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
+
 * !Google Maps
 * !Active Menu Item
 * Labels --> https://stackoverflow.com/questions/18432376/what-does-for-attribute-do-in-html-label-tag

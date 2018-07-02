@@ -41,6 +41,7 @@
     "gulp-uglify-es": "^1.0.1",
     "hammerjs": "^2.0.8",
     "lightbox2": "^2.10.0",
+    "load-google-maps-api": "^1.3.2",
     "moment": "^2.22.1",
     "parsleyjs": "^2.8.1",
     "quill": "^1.3.6",

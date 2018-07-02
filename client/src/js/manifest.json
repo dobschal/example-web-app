@@ -1,0 +1,21 @@
+{ 
+
+    "name": "Example Web App", 
+  
+    "short_name": "Example", 
+  
+    "start_url": "index.html", 
+  
+    "display": "standalone", 
+  
+    "icons": [{ 
+  
+      "src": "images/brand.svg", 
+  
+      "sizes": "192x192", 
+  
+      "type": "image/svg"
+  
+    }] 
+  
+  } 

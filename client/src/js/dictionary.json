@@ -103,6 +103,12 @@
         "title": {
             "de": "Karte",
             "en": "Map"
+        },
+        "error": {
+            "load": {
+                "de": "Karte konnte nicht geladen werden!",
+                "en": "Could not load map!"
+            }
         }
     }
 }
