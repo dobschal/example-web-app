@@ -10,7 +10,7 @@ module.exports = function( io ) {
 
     webPush.setVapidDetails("mailto:sascha@dobschal.eu", publicKey, privateKey );
 
-    router.post('/register-push', function(req, res, next) {
+    router.post('/push/register', function(req, res, next) {
         let subscription = req.body;
         let notificationPayload = JSON.stringify({ title: "Welcome!", body: "Pushs are now available." });
 
@@ -21,6 +21,22 @@ module.exports = function( io ) {
             .then(res.send({ success: true, subscription: savedSubscription }))
             .catch( err => next(err) );
         });
+    });
+
+    router.post('/push/sendall', function(req, res, next) {
+        let { title, body } = req.body;
+        let notificationPayload = JSON.stringify({ title, body });
+        PushSubscription.find( (dbError, subscriptions) => {
+            if (dbError) return next( dbError );
+            subscriptions.forEach( subscription => {
+                webPush.sendNotification( subscription, notificationPayload )
+                .then( console.log("[Push] Sent successful.") )
+                .catch( err => {
+                    console.error( "[Push] Error on sending push! ", err );
+                });
+            });
+        });   
+        res.send({ success: true });
     });
 
     return router;
