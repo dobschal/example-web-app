@@ -14,7 +14,7 @@ module.exports = function( io ) {
         let subscription = req.body;
         let notificationPayload = JSON.stringify({ title: "Welcome!", body: "Pushs are now available." });
 
-        let pushSubscription = new PushSubscription( subscription );
+        let pushSubscription = new PushSubscription( { subscription: JSON.stringify(subscription) } );
         pushSubscription.save((dbError, savedSubscription) => {
             if (dbError) return next( dbError );
             webPush.sendNotification( subscription, notificationPayload )
@@ -28,7 +28,8 @@ module.exports = function( io ) {
         let notificationPayload = JSON.stringify({ title, body });
         PushSubscription.find( (dbError, subscriptions) => {
             if (dbError) return next( dbError );
-            subscriptions.forEach( subscription => {
+            subscriptions.forEach( subscriptionWrapper => {
+                let subscription = JSON.parse( subscriptionWrapper.subscription );
                 webPush.sendNotification( subscription, notificationPayload )
                 .then( console.log("[Push] Sent successful.") )
                 .catch( err => {

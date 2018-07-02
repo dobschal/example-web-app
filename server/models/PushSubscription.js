@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
 
-var pushSubscriptioSchema = mongoose.Schema({
-    endpoint: { type: String },
-    expirationTime: { type: mongoose.Schema.Types.Mixed },
-    options: { type: mongoose.Schema.Types.Mixed }
+var pushSubscriptionSchema = mongoose.Schema({
+    subscription: { type: String, required: true }
 });
 
-module.exports = mongoose.model('PushSubscriptio', pushSubscriptioSchema);
+module.exports = mongoose.model('PushSubscription', pushSubscriptionSchema);
