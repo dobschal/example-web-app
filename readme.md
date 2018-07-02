@@ -49,6 +49,13 @@
 * !Datenschutz DSGVO
 * Form Validation - parsleyjs
 
+* !Favicon
+
+#### Fullscreen iOS App
+It is possible to attach an WebApp to the iOS home screen and open that webapp in fullscreen format.
+This gives it the feeling of an native app. All we need to add is the manifest.json.
+http://blog.dialogic.com/blog/progressive-web-apps-full-screen
+
 #### Swipe Gestures
 We want to detect swipe gestures of the user to perform some actions. In our case, we toggle the sidebar if the user swipes to left or right.
 To detect swipe gestures we use HammerJS in the MainController.
@@ -182,7 +189,6 @@ We are using the NPM package *'web-push'* for that.
 
 * E-Mail Templates
 * !CRON Jobs
-* !Fav icon
 * Auto Deploy on Repository Change
 * !Locale header to send e-mails in right language
 * !Super Admin - Page
